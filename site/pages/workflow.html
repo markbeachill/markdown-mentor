@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Workflow &mdash; Markdown Mentor</title>
-<meta name="description" content="The Markdown Mentor workflow, step by step, with the commands you type.">
+<title>Workflow — Markdown Mentor</title>
+<meta name="description" content="A clickable Markdown Mentor workflow with one plain-English page for each step.">
 <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
@@ -26,55 +26,75 @@
 <section class="block">
   <div class="wrap">
     <h2>Workflow</h2>
-    <h3 style="margin-top:0">From a folder of files to finished materials</h3>
+    <h3 style="margin-top:0">From a folder of files to finished teaching materials</h3>
     <div class="threeq">
-      <div><span class="q">What</span><span class="a">The whole workflow once, with the exact commands you type and the prompts you paste.</span></div>
-      <div><span class="q">Why</span><span class="a">Seeing the full chain once makes each step clear. After this you can do the same with your own files.</span></div>
-      <div><span class="q">Next</span><span class="a">Install the tool first (see the Install page), then follow these steps in order.</span></div>
+      <div><span class="q">What</span><span class="a">A clickable map of the Markdown Mentor workflow. Each step has its own page.</span></div>
+      <div><span class="q">Why</span><span class="a">Teachers and learners need to understand the purpose of each step, not just the command to run.</span></div>
+      <div><span class="q">Next</span><span class="a">Start with step 1, or use <code class="inline">markdown-mentor start</code> for a guided terminal run.</span></div>
     </div>
 
-    <h3>1. Collect sources <span class="who" style="font-family:var(--mono);font-size:.7rem;color:var(--mark)">YOU</span></h3>
-    <p>Put the files you want to teach from into one folder. The sample project already has three small files in <code class="inline">examples/sample-sources</code>. For your own work, see the source guide in the Library.</p>
+    <p>Markdown Mentor separates the work clearly. You collect sources and make teaching decisions. The software converts, checks, and exports. The AI proposes, plans, and drafts when you paste prompts into your own chatbot.</p>
 
-    <h3>2. Build the content pack <span class="who" style="font-family:var(--mono);font-size:.7rem;color:var(--mark)">SOFTWARE</span></h3>
-    <p>This converts every file into one Markdown file the AI can read, plus a manifest listing what it found.</p>
-    <div class="cmd"><span class="prompt">$ </span>markdown-mentor build-pack examples/sample-sources -g "teach thesis statements"</div>
-
-    <h3>3. Check the pack <span class="who" style="font-family:var(--mono);font-size:.7rem;color:var(--mark)">SOFTWARE</span></h3>
-    <p>This writes a readiness note that flags thin coverage, duplicates, or possible private data. It never stops you; it makes risks visible.</p>
-    <div class="cmd"><span class="prompt">$ </span>markdown-mentor check-pack content-pack.md -g "teach thesis statements"</div>
-
-    <h3>4. Decide what to teach <span class="who" style="font-family:var(--mono);font-size:.7rem;color:var(--mark)">YOU + AI</span></h3>
-    <p>Write a Teaching Brief, or paste the <a href="prompts.html">Suggest teaching briefs</a> prompt into a chatbot with your content pack and edit one of its suggestions. A Teaching Brief says what to teach, who for, the level, and what to include or leave out.</p>
-
-    <h3>5. Choose how to teach it <span class="who" style="font-family:var(--mono);font-size:.7rem;color:var(--mark)">YOU</span></h3>
-    <p>Pick a Pedagogy Specification from the Library. This sets the style: tone, level, scaffolding, practice, and feedback. ("Scaffolding" means the support you give learners, which you reduce as they improve.)</p>
-
-    <h3>6. Choose which materials to make <span class="who" style="font-family:var(--mono);font-size:.7rem;color:var(--mark)">YOU</span></h3>
-    <p>Pick a Teaching Materials List, such as Getting Started or Revision Pack. This is the set of material types you want for one purpose.</p>
-
-    <h3>7. Plan the materials <span class="who" style="font-family:var(--mono);font-size:.7rem;color:var(--mark)">AI, CHECKED BY YOU</span></h3>
-    <p>Paste the <a href="prompts.html">Generate the materials inventory</a> prompt into a chatbot, with your content pack, brief, pedagogy, material specifications, and materials list. The AI returns a numbered plan. This is the main checkpoint: fixing the plan now is far easier than fixing many finished documents.</p>
-
-    <h3>8. Generate each material <span class="who" style="font-family:var(--mono);font-size:.7rem;color:var(--mark)">AI, CHECKED BY YOU</span></h3>
-    <p>For each inventory item, paste the <a href="prompts.html">Generate one teaching material</a> prompt into a chatbot. The AI returns one material in Markdown. Read it, edit anything wrong, and save it as a <code class="inline">.md</code> file in a folder such as <code class="inline">materials</code>.</p>
-
-    <h3>9. Export <span class="who" style="font-family:var(--mono);font-size:.7rem;color:var(--mark)">SOFTWARE</span></h3>
-    <p>Turn your Markdown materials into the formats people use.</p>
-    <div class="cmd"><span class="prompt">$ </span>markdown-mentor export materials -f docx -o exports
-<span class="prompt">$ </span>markdown-mentor export materials -f pptx -o exports
-<span class="prompt">$ </span>markdown-mentor export materials -f html -o exports</div>
-    <p>To control the look, add a style profile from the Library:</p>
-    <div class="cmd"><span class="prompt">$ </span>markdown-mentor export materials -f docx -o exports -s library/style-profiles/student-handout.json</div>
-
-    <div class="callout">
-      <p class="label">PDF</p>
-      <p>To make a PDF, use <code class="inline">-f pdf</code>. This uses LibreOffice (a free office suite) if you have it installed. If you do not, the tool tells you, and you can open the Word or web file and use "Save as PDF" in your own software.</p>
+    <div class="workflow-map" aria-label="Workflow steps">
+      <a class="step-card" href="workflow/step-1-collect-sources.html">
+        <span class="step-no">01</span>
+        <span class="step-who">You</span>
+        <strong>Collect sources</strong>
+        <span>Gather the files the learner will be taught from.</span>
+      </a>
+      <a class="step-card" href="workflow/step-2-build-content-pack.html">
+        <span class="step-no">02</span>
+        <span class="step-who">Markdown Mentor</span>
+        <strong>Build the content pack</strong>
+        <span>Convert the source folder into one AI-readable Markdown pack.</span>
+      </a>
+      <a class="step-card" href="workflow/step-3-check-pack.html">
+        <span class="step-no">03</span>
+        <span class="step-who">Markdown Mentor</span>
+        <strong>Check the pack</strong>
+        <span>Run a readiness check before asking AI to plan lessons.</span>
+      </a>
+      <a class="step-card" href="workflow/step-4-decide-what-to-teach.html">
+        <span class="step-no">04</span>
+        <span class="step-who">You + AI</span>
+        <strong>Decide what to teach</strong>
+        <span>Create a Teaching Brief that sets the focus.</span>
+      </a>
+      <a class="step-card" href="workflow/step-5-choose-pedagogy.html">
+        <span class="step-no">05</span>
+        <span class="step-who">You</span>
+        <strong>Choose how to teach it</strong>
+        <span>Pick or adapt a Pedagogy Specification.</span>
+      </a>
+      <a class="step-card" href="workflow/step-6-choose-materials.html">
+        <span class="step-no">06</span>
+        <span class="step-who">You</span>
+        <strong>Choose which materials to make</strong>
+        <span>Pick a Teaching Materials List for the purpose.</span>
+      </a>
+      <a class="step-card" href="workflow/step-7-plan-materials.html">
+        <span class="step-no">07</span>
+        <span class="step-who">AI, checked by you</span>
+        <strong>Plan the materials</strong>
+        <span>Create and approve a Teaching Materials Inventory.</span>
+      </a>
+      <a class="step-card" href="workflow/step-8-generate-materials.html">
+        <span class="step-no">08</span>
+        <span class="step-who">AI, checked by you</span>
+        <strong>Generate each material</strong>
+        <span>Draft one Markdown teaching material at a time.</span>
+      </a>
+      <a class="step-card" href="workflow/step-9-export.html">
+        <span class="step-no">09</span>
+        <span class="step-who">Markdown Mentor</span>
+        <strong>Export</strong>
+        <span>Turn finished Markdown into practical formats.</span>
+      </a>
     </div>
 
     <div class="callout">
       <p class="label">Shortcut</p>
-      <p>To be walked through every step in the terminal, run <code class="inline">markdown-mentor start</code>. It runs the software steps for you and points you to the right prompt for each AI step.</p>
+      <p>To be walked through every step in the terminal, run <code class="inline">markdown-mentor start</code>. The site pages explain what each step is for; the command helps you do the software parts.</p>
     </div>
   </div>
 </section>

@@ -167,3 +167,84 @@ footer .mono { font-family: var(--mono); font-size: 0.8rem; }
   .hero { padding-top: 3rem; }
   .nav { gap: 0.8rem; }
 }
+
+
+/* --- clickable workflow map and step pages --- */
+.workflow-map {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 0.9rem;
+  margin: 2rem 0;
+}
+.step-card {
+  display: grid;
+  gap: 0.25rem;
+  border: 1px solid var(--rule);
+  border-radius: 5px;
+  background: #fff;
+  padding: 1rem 1.1rem;
+  text-decoration: none;
+  color: var(--ink);
+  box-shadow: 0 1px 0 var(--paper-edge);
+}
+.step-card:hover {
+  border-color: var(--mark);
+  transform: translateY(-1px);
+}
+.step-card .step-no,
+.step-card .step-who,
+.step-owner,
+.breadcrumb {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+.step-card .step-no { color: var(--mark); font-weight: 700; }
+.step-card .step-who { color: var(--ink-soft); }
+.step-card strong { color: var(--blue); font-size: 1.15rem; }
+.step-card span:last-child { color: var(--ink-soft); font-size: 0.98rem; text-transform: none; letter-spacing: 0; font-family: var(--serif); }
+.breadcrumb { color: var(--ink-soft); margin-bottom: 1rem; }
+.step-owner { color: var(--ink-soft); margin-top: -0.5rem; }
+.teaching-intro {
+  border: 1px solid var(--rule);
+  border-radius: 5px;
+  background: #fff;
+  padding: 1.1rem 1.2rem;
+  margin: 1.4rem 0 1.4rem;
+}
+.teaching-intro .label {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--mark);
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+.plain-list { margin-top: 0; padding-left: 1.3rem; }
+.plain-list li { margin-bottom: 0.55rem; }
+.technical-appendix {
+  border-top: 1px solid var(--rule);
+  margin-top: 2rem;
+  padding-top: 2rem;
+}
+.technical-appendix h2 {
+  color: var(--mark);
+  margin-bottom: 1rem;
+}
+.page-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  border-top: 1px solid var(--rule);
+  margin-top: 2rem;
+  padding-top: 1.2rem;
+}
+.steps .title a {
+  color: var(--ink);
+  text-decoration-color: var(--mark);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+.steps .title a:hover { color: var(--mark); }

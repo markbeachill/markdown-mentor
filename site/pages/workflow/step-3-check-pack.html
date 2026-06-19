@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Step 3: Check the pack — Markdown Mentor</title>
+<meta name="description" content="Run a readiness check before asking AI to plan lessons.">
+<link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="../../index.html">markdown<span class="caret">-</span>mentor</a>
+    <nav class="nav">
+      <a href="../../index.html">Home</a>
+      <a href="../workflow.html">Workflow</a>
+      <a href="../prompts.html">Prompts</a>
+      <a href="../library.html">Library</a>
+      <a href="../style-builder.html">Style</a>
+      <a href="../install.html">Install</a>
+    </nav>
+  </div>
+</header>
+
+<section class="block">
+  <div class="wrap">
+    <p class="breadcrumb"><a href="../workflow.html">Workflow</a> / Step 3</p>
+    <h2>Step 3</h2>
+    <h3 style="margin-top:0">Check the pack</h3>
+    <p class="step-owner">Who leads this step: <strong>Markdown Mentor</strong></p>
+
+    <div class="teaching-intro">
+      <p class="label">Teaching and learning view</p>
+      <p>This is a teaching quality gate. It does not judge the subject perfectly, but it helps you notice obvious problems before the AI turns them into worksheets, slides, or quizzes.</p>
+    </div>
+
+    <div class="threeq">
+      <div><span class="q">What</span><span class="a">Markdown Mentor writes a readiness note that flags likely issues such as thin coverage, duplicates, missing practice, or possible private data.</span></div>
+      <div><span class="q">Why</span><span class="a">A weak content pack can still produce confident AI output. Checking first helps keep the final learning material honest and useful.</span></div>
+      <div><span class="q">Next</span><span class="a">Read the readiness note. If it raises serious risks, improve the source folder or narrow the teaching brief.</span></div>
+    </div>
+
+    <h3>What to do</h3>
+    <ol class="plain-list">
+      <li>Run the check command with the same teaching goal.</li>
+      <li>Read the readiness note before using any AI prompt.</li>
+      <li>Treat warnings as prompts for teacher judgement, not as automatic pass/fail rules.</li>
+      <li>Use the improve-content-pack prompt if you want AI help deciding what to add.</li>
+    </ol>
+
+    <div class="callout">
+      <p class="label">Check before moving on</p>
+      <p>Ask: can the pack support the teaching goal, or should the goal be narrower?</p>
+    </div>
+
+    <section class="technical-appendix" aria-labelledby="technical-appendix">
+      <h2 id="technical-appendix">Technical appendix</h2>
+      <p>This is the practical detail for running or finding the step in the repo.</p>
+    <h3>Commands</h3>
+    <div class="cmd"><span class="prompt">$ </span>markdown-mentor check-pack content-pack.md -g &quot;teach thesis statements&quot;</div>
+      <h3>Files and details</h3>
+      <ul class="plain-list">
+      <li>The check is rule-based. It is not an AI judgement.</li>
+      <li>The note is usually written to <code class="inline">content-pack-readiness.md</code>.</li>
+      <li>The checker looks for signals such as word count, number of sources, examples, questions, assessment language, duplicates, and possible private data.</li>
+      <li>Useful prompt: <a href="../prompts.html">Improve the content pack</a>.</li>
+      </ul>
+    </section>
+
+    <div class="page-nav">
+      <a class="btn" href="step-2-build-content-pack.html">Previous: Build the content pack</a>
+      <a class="btn" href="../workflow.html">Back to workflow</a>
+      <a class="btn primary" href="step-4-decide-what-to-teach.html">Next: Decide what to teach</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>Markdown Mentor &mdash; plain tools, plain English.</span>
+    <span class="mono"><a href="https://github.com/markbeachill/markdown-mentor">github.com/markbeachill/markdown-mentor</a></span>
+  </div>
+</footer>
+
+<script src="../../js/copy.js"></script>
+</body>
+</html>
