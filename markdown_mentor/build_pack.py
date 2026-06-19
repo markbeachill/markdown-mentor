@@ -39,6 +39,7 @@ SUPPORTED_SUFFIXES = {
 
 # A strong, unlikely-to-clash marker so the AI can see source boundaries.
 DELIMITER = "=" * 70
+LIBRARY_METADATA_MARKER = "<!-- markdown-library-file: true -->"
 
 
 class MarkItDownMissing(RuntimeError):
@@ -177,10 +178,80 @@ def _relative_to_source(path: Path, source_path: Path) -> str:
         return path.name
 
 
-def _convert_sources(source_path: Path) -> tuple[list[SourceRecord], list[tuple[SourceRecord, str]]]:
-    """Convert source files and return records plus source sections."""
-    md = _require_markitdown()
+def _is_markdown_library_text(text: str) -> bool:
+    """Return True if text looks like a Markdown library file.
 
+    New library files include LIBRARY_METADATA_MARKER. Older library files are
+    still accepted if they contain balanced source markers. This lets users put
+    an older Markdown library into the source folder and have its sources
+    imported as separate sources.
+    """
+    if LIBRARY_METADATA_MARKER in text:
+        return True
+    return "SOURCE START" in text and "SOURCE END:" in text and "Fingerprint:" in text
+
+
+def _is_markdown_library_manifest_text(text: str) -> bool:
+    """Return True if a Markdown file looks like a library manifest."""
+    return "# Markdown Library Manifest" in text and "| No. | File |" in text
+
+
+def _record_from_imported_section(section: dict[str, str], library_path: Path, source_path: Path) -> SourceRecord:
+    """Create a source record for a section imported from another library file."""
+    file_name = section["file"]
+    return SourceRecord(
+        name=Path(file_name).name,
+        relative_path=file_name,
+        suffix=Path(file_name).suffix.lower(),
+        size_bytes=0,
+        checksum=section.get("fingerprint", ""),
+        converted=True,
+        note=f"imported from Markdown library: {_relative_to_source(library_path, source_path)}",
+    )
+
+
+def _dedupe_section_pairs(
+    records: list[SourceRecord],
+    section_pairs: list[tuple[SourceRecord, str]],
+    *,
+    existing_fingerprints: set[str] | None = None,
+    allow_duplicates: bool = False,
+) -> list[tuple[SourceRecord, str]]:
+    """Remove duplicate sections unless the user has explicitly allowed them.
+
+    Duplicates are identified by source fingerprint. When a duplicate is not
+    added, the record stays in the manifest with a clear note. The CLI also
+    prints "not added - filename" for each duplicate.
+    """
+    if allow_duplicates:
+        return section_pairs
+
+    seen = set(existing_fingerprints or set())
+    kept: list[tuple[SourceRecord, str]] = []
+    for record, section in section_pairs:
+        if record.checksum and record.checksum in seen:
+            record.converted = False
+            record.note = "not added: duplicate source fingerprint"
+            continue
+        if record.checksum:
+            seen.add(record.checksum)
+        kept.append((record, section))
+    return kept
+
+
+def _convert_sources(
+    source_path: Path,
+    *,
+    existing_fingerprints: set[str] | None = None,
+    allow_duplicates: bool = False,
+) -> tuple[list[SourceRecord], list[tuple[SourceRecord, str]]]:
+    """Convert source files and return records plus source sections.
+
+    If the source input contains an existing Markdown library file, the tool
+    imports each source section from that library as a separate source. It does
+    not wrap the whole library as one file. This keeps the new library readable
+    to AI as a set of separate files.
+    """
     import tempfile
 
     with tempfile.TemporaryDirectory() as tmp:
@@ -188,11 +259,40 @@ def _convert_sources(source_path: Path) -> tuple[list[SourceRecord], list[tuple[
         files = _gather_files(source_path, work_dir)
 
         records: list[SourceRecord] = []
-        sections: list[tuple[SourceRecord, str]] = []
+        section_pairs: list[tuple[SourceRecord, str]] = []
+        md = None
 
         for path in files:
             data = path.read_bytes()
             suffix = path.suffix.lower()
+
+            if suffix in {".md", ".markdown"}:
+                try:
+                    text = data.decode("utf-8")
+                except UnicodeDecodeError:
+                    text = data.decode("utf-8", errors="replace")
+
+                if _is_markdown_library_text(text):
+                    imported_sections = _parse_library_sections(text)
+                    if imported_sections:
+                        for section in imported_sections:
+                            record = _record_from_imported_section(section, path, source_path)
+                            records.append(record)
+                            section_pairs.append((record, section["raw"]))
+                        continue
+
+                if _is_markdown_library_manifest_text(text):
+                    records.append(SourceRecord(
+                        name=path.name,
+                        relative_path=_relative_to_source(path, source_path),
+                        suffix=suffix,
+                        size_bytes=len(data),
+                        checksum=_checksum(data),
+                        converted=False,
+                        note="skipped: Markdown library manifest",
+                    ))
+                    continue
+
             record = SourceRecord(
                 name=path.name,
                 relative_path=_relative_to_source(path, source_path),
@@ -208,6 +308,8 @@ def _convert_sources(source_path: Path) -> tuple[list[SourceRecord], list[tuple[
                 continue
 
             try:
+                if md is None:
+                    md = _require_markitdown()
                 result = md.convert(str(path))
                 text = (result.text_content or "").strip()
             except Exception as exc:  # noqa: BLE001 - report, do not crash
@@ -222,9 +324,15 @@ def _convert_sources(source_path: Path) -> tuple[list[SourceRecord], list[tuple[
 
             record.converted = True
             records.append(record)
-            sections.append((record, _format_section(record, text)))
+            section_pairs.append((record, _format_section(record, text)))
 
-    return records, sections
+    section_pairs = _dedupe_section_pairs(
+        records,
+        section_pairs,
+        existing_fingerprints=existing_fingerprints,
+        allow_duplicates=allow_duplicates,
+    )
+    return records, section_pairs
 
 
 def build_library(
@@ -234,6 +342,7 @@ def build_library(
     *,
     title: str = "Markdown Library File",
     maker_name: str = "Make Markdown Library",
+    allow_duplicates: bool = False,
 ) -> BuildResult:
     """Build a Markdown library file from a file, folder, or ZIP.
 
@@ -256,7 +365,7 @@ def build_library(
     output_path = Path(output_path).expanduser().resolve()
     manifest_path = output_path.with_name(output_path.stem + "-manifest.md")
 
-    records, section_pairs = _convert_sources(source_path)
+    records, section_pairs = _convert_sources(source_path, allow_duplicates=allow_duplicates)
     sections = [section for _, section in section_pairs]
 
     _write_library(output_path, purpose, source_path, records, sections, title, maker_name)
@@ -287,15 +396,12 @@ def add_to_library(
     existing_fingerprints = {sec.get("fingerprint", "") for sec in existing_sections}
     manifest_path = library_path.with_name(library_path.stem + "-manifest.md")
 
-    records, section_pairs = _convert_sources(source_path)
-    sections_to_add: list[str] = []
-
-    for record, section in section_pairs:
-        if skip_duplicates and record.checksum in existing_fingerprints:
-            record.converted = False
-            record.note = "skipped: duplicate already in library"
-            continue
-        sections_to_add.append(section)
+    records, section_pairs = _convert_sources(
+        source_path,
+        existing_fingerprints=existing_fingerprints,
+        allow_duplicates=not skip_duplicates,
+    )
+    sections_to_add = [section for _, section in section_pairs]
 
     if sections_to_add:
         new_sections: list[dict[str, str]] = []
@@ -303,7 +409,8 @@ def add_to_library(
             new_sections.extend(_parse_library_sections(section))
         all_sections = existing_sections + new_sections
         _write_library_from_sections(library_path, all_sections)
-        _write_manifest_from_sections(manifest_path, all_sections)
+        not_added = [r for r in records if r.note.startswith("not added:")]
+        _write_manifest_from_sections(manifest_path, all_sections, not_added)
     else:
         _append_manifest(manifest_path, purpose, source_path, records)
 
@@ -370,6 +477,7 @@ def _write_library(
     today = _dt.date.today().isoformat()
     converted = [r for r in records if r.converted]
     lines = [
+        LIBRARY_METADATA_MARKER,
         f"# {title}",
         "",
         f"This file was built by {maker_name} from your source files.",
@@ -396,6 +504,7 @@ def _write_library_from_sections(output_path: Path, sections: list[dict[str, str
     """Rewrite a library file from parsed source sections, with a fresh manifest."""
     today = _dt.date.today().isoformat()
     lines = [
+        LIBRARY_METADATA_MARKER,
         "# Markdown Library File",
         "",
         "This file was built by Make Markdown Library from your source files.",
@@ -444,7 +553,11 @@ def _write_manifest(
     manifest_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
-def _write_manifest_from_sections(manifest_path: Path, sections: list[dict[str, str]]) -> None:
+def _write_manifest_from_sections(
+    manifest_path: Path,
+    sections: list[dict[str, str]],
+    not_added_records: list[SourceRecord] | None = None,
+) -> None:
     """Write a manifest from the source sections currently in a library file."""
     lines = [
         "# Markdown Library Manifest",
@@ -463,6 +576,11 @@ def _write_manifest_from_sections(manifest_path: Path, sections: list[dict[str, 
             converted=True,
         )
         lines.append(_manifest_row(record, i))
+    if not_added_records:
+        lines += ["", "## Files not added in the last run", "", _manifest_table_header()]
+        start = len(sections) + 1
+        for i, record in enumerate(not_added_records, start=start):
+            lines.append(_manifest_row(record, i))
     manifest_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 

@@ -10,7 +10,7 @@
 <header class="site-header">
   <h1>Step 4. Make your Markdown library file</h1>
   <p>Make your Markdown library file</p>
-  <nav><a href="../../index.html">Home</a> <a href="../workflow.html">Workflow</a> <a href="../start-project.html">Start project</a> <a href="../library-maker.html">Make Markdown Library</a> <a href="../markdown-mentor.html">Markdown Mentor</a></nav>
+  <nav aria-label="Main navigation"><a href="../../index.html">Home</a> <a href="../workflow.html">Workflow</a> <a href="../start-project.html">Start project</a> <a href="../library-maker.html">Make Markdown Library</a> <a href="../markdown-mentor.html">Markdown Mentor</a> <a href="../prompts.html">Prompts</a> <a href="../library.html">Examples</a> <a href="../style-builder.html">Style file</a> <a href="../install.html">Install</a></nav>
 </header>
 <main>
 
@@ -18,7 +18,9 @@
 <h2>What to do</h2>
 <p>Run this command:</p>
 <pre><code>make-markdown-library new 1-source-files -o 2-markdown-library/markdown-library.md</code></pre>
-<p>The tool also creates 2-markdown-library/markdown-library-manifest.md and handles folders, files, ZIPs, and nested ZIPs.</p>
+<p>The tool also creates <code>2-markdown-library/markdown-library-manifest.md</code> and handles folders, files, ZIPs, nested ZIPs, and existing Markdown library files.</p>
+<p>If the source folder contains an existing Markdown library, the tool imports the sources inside that library as separate source sections. It does not add the old library as one large file, so AI can still read the new library as a set of separate files.</p>
+<p>Duplicates are skipped by default. If a duplicate is skipped, the tool prints <code>not added - filename</code>. To include duplicates deliberately, add <code>--allow-duplicates</code>.</p>
 <h2>Check before moving on</h2>
 <p>Make sure the file or folder named above exists and says what you need it to say. The user reviews AI work before continuing.</p>
 <nav class="page-nav"><a href="step-3-find-more-sources.html">← Previous step</a> <a href="step-5-list-remove.html">Next step →</a></nav>

@@ -1,3 +1,4 @@
+<!-- markdown-library-file: true -->
 # Markdown Library File
 
 This file was built by Make Markdown Library from your source files.

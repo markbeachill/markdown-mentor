@@ -14,7 +14,7 @@ docs/canonical-workflow.md
 
 `make-markdown-library` is the general-purpose source tool. It turns source materials into one structured Markdown library file.
 
-It works with folders, individual files, ZIP files, and nested ZIP files.
+It works with folders, individual files, ZIP files, nested ZIP files, and existing Markdown library files. If it finds an existing library, it imports the sources inside it as separate sources, so AI can still read the new library as a set of files.
 
 Common commands:
 
@@ -74,6 +74,8 @@ Put your source files in `1-source-files/`, then run this from inside the projec
 ```bash
 make-markdown-library new 1-source-files -o 2-markdown-library/markdown-library.md
 ```
+
+Duplicates are skipped by default. If a duplicate is skipped, the tool prints `not added - filename`. Use `--allow-duplicates` only when you deliberately want duplicates.
 
 The tool also creates:
 

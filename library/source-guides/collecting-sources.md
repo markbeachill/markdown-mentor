@@ -18,6 +18,7 @@ Aim to include a useful mix of:
 - **Learner-level information.** A note of who this is for and their level.
 - **Curriculum or exam requirements.** If your teaching must match a syllabus.
 - **ZIP files.** Make Markdown Library can unpack ZIP files and nested ZIP files.
+- **Existing Markdown library files.** If you already have a Markdown library file, put it in the source folder. The tool will import the sources inside it as separate sources.
 
 ## What to leave out
 
@@ -50,4 +51,8 @@ The AI does not provide the sources for you. You still choose, check, and add th
 
 ## File types that work
 
-Make Markdown Library can read text, Markdown, Word, PDF, PowerPoint, HTML, CSV, and ZIP files. If a file will not convert, save it as a Word document or PDF and try again.
+Make Markdown Library can read text, Markdown, Word, PDF, PowerPoint, HTML, CSV, ZIP files, nested ZIP files, and existing Markdown library files. If a file will not convert, save it as a Word document or PDF and try again.
+
+## Duplicates
+
+Duplicates are skipped by default using the source fingerprint. If the tool skips a duplicate, it prints `not added - filename`. Use `--allow-duplicates` only when you deliberately want duplicate sources in the library.

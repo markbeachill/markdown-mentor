@@ -62,6 +62,15 @@ folders
 individual files
 ZIP files
 nested ZIP files
+existing Markdown library files
+```
+
+If a source folder contains an existing Markdown library file, the tool imports each source section from that library as a separate source. It does not add the old library as one large file. This keeps the new library readable to AI as a set of separate files.
+
+By default, the tool does not add duplicate source fingerprints. Use `--allow-duplicates` only when you deliberately want duplicate sources. When a duplicate is skipped, the command prints:
+
+```text
+not added - filename
 ```
 
 It creates and maintains:
@@ -216,6 +225,7 @@ Source materials might include:
 - example answers
 - learner writing, if it is safe and anonymised
 - ZIP files containing any of the above
+- existing Markdown library files
 
 Example:
 
@@ -264,11 +274,21 @@ Output:
 2-markdown-library/markdown-library-manifest.md
 ```
 
-The tool should process folders, individual files, ZIP files, and nested ZIP files.
+The tool should process folders, individual files, ZIP files, nested ZIP files, and existing Markdown library files.
+
+If the source folder contains an existing Markdown library file, the tool should import the source sections from that library as separate sources in the new library. The old library file itself should not be added as one single source. This preserves the AI-readable structure: the new library still looks like a set of separate source files.
 
 The Markdown library file contains the combined source material.
 
 The manifest lists the files included in the library.
+
+The library file should include a small metadata marker so the tool can recognise it later as a Markdown library file. This marker must not stop the AI reading the file as a normal set of source sections.
+
+Duplicate rule:
+
+- By default, do not add a source if its fingerprint is already in the library or already appeared earlier in the same run.
+- If a duplicate is skipped, print `not added - filename`.
+- If the user passes `--allow-duplicates`, add duplicates anyway.
 
 The tool also checks that the file works technically. This means it checks things such as source sections, source boundaries, basic source information, and manifest generation.
 
@@ -311,6 +331,18 @@ After a file is removed, the tool should update:
 ```
 
 The tool should make a backup before rewriting the library file.
+
+Duplicates are skipped by default. To deliberately include duplicates when making or adding sources, use:
+
+```bash
+make-markdown-library new 1-source-files -o 2-markdown-library/markdown-library.md --allow-duplicates
+```
+
+or:
+
+```bash
+make-markdown-library add 2-markdown-library/markdown-library.md more-sources.zip --allow-duplicates
+```
 
 ---
 
@@ -633,6 +665,15 @@ The manifest should include:
 - checksum or fingerprint
 - conversion status
 - warning notes if needed
+- files not added because they were duplicates
+
+The Markdown library file should include a metadata marker, for example:
+
+```text
+<!-- markdown-library-file: true -->
+```
+
+The marker is for the tool. The rest of the library must remain plain, readable Markdown so AI can process it as a set of separate source sections.
 
 The source number is used by:
 

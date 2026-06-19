@@ -57,3 +57,7 @@ Each prompt lives next to the file or task it helps with. For example, the promp
 ## Where examples live
 
 Generic examples are on the website or in the repository library. They are not copied into every user project.
+
+## Existing Markdown library files
+
+If `1-source-files/` contains an existing Markdown library file, Make Markdown Library imports the source sections inside it as separate sources. It does not add the whole old library as one large file. Duplicates are skipped by default and reported as `not added - filename`.

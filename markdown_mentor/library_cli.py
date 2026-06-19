@@ -21,9 +21,20 @@ from .build_pack import (
 )
 
 
+def _print_not_added(result) -> None:
+    for record in result.records:
+        if record.note.startswith("not added:"):
+            print(f"  not added - {record.relative_path}")
+
+
 def _cmd_make(args: argparse.Namespace) -> int:
     try:
-        result = build_library(args.source, args.output, args.purpose or "")
+        result = build_library(
+            args.source,
+            args.output,
+            args.purpose or "",
+            allow_duplicates=args.allow_duplicates,
+        )
     except MarkItDownMissing as exc:
         print(str(exc), file=sys.stderr)
         return 2
@@ -37,6 +48,7 @@ def _cmd_make(args: argparse.Namespace) -> int:
     print(f"  Sources included: {result.converted_count}")
     print(f"  Sources skipped:  {result.skipped_count}")
     if result.skipped_count:
+        _print_not_added(result)
         print("  Read the manifest to see why some files were skipped.")
     return 0
 
@@ -62,6 +74,7 @@ def _cmd_add(args: argparse.Namespace) -> int:
     print(f"  Sources added:   {result.converted_count}")
     print(f"  Sources skipped: {result.skipped_count}")
     if result.skipped_count:
+        _print_not_added(result)
         print("  Read the manifest to see why some files were skipped.")
     return 0
 
@@ -130,9 +143,14 @@ def build_parser() -> argparse.ArgumentParser:
         "new",
         help="Make a new Markdown library file from a file, folder, or ZIP.",
     )
-    p_make.add_argument("source", help="A source file, folder, or ZIP file.")
+    p_make.add_argument("source", help="A source file, folder, ZIP file, or existing Markdown library file.")
     p_make.add_argument("-o", "--output", help="Where to save the Markdown library file.")
     p_make.add_argument("-p", "--purpose", help="A short note about what this library is for.")
+    p_make.add_argument(
+        "--allow-duplicates",
+        action="store_true",
+        help="Add sources even when the same fingerprint appears more than once.",
+    )
     p_make.set_defaults(func=_cmd_make)
 
     p_add = sub.add_parser(
@@ -140,7 +158,7 @@ def build_parser() -> argparse.ArgumentParser:
         help="Add source files to an existing Markdown library file.",
     )
     p_add.add_argument("library", help="The existing Markdown library file.")
-    p_add.add_argument("source", help="A new source file, folder, or ZIP file to add.")
+    p_add.add_argument("source", help="A new source file, folder, ZIP file, or existing Markdown library file to add.")
     p_add.add_argument("-p", "--purpose", help="A short note about why you are adding these sources.")
     p_add.add_argument(
         "--allow-duplicates",

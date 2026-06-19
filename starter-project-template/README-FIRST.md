@@ -5,10 +5,10 @@ This folder keeps one teaching-material project in order.
 ## What goes where
 
 1-source-files/
-: Put the PDFs, Word files, slides, notes, readings, examples, ZIP files, and other source files here.
+: Put the PDFs, Word files, slides, notes, readings, examples, ZIP files, existing Markdown library files, and other source files here.
 
 2-markdown-library/
-: Make Markdown Library saves the combined Markdown library file and manifest here.
+: Make Markdown Library saves the combined Markdown library file and manifest here. If an existing Markdown library is placed in `1-source-files/`, its source sections are imported as separate sources. Duplicates are skipped by default and shown as `not added - filename`.
 
 3-teaching-approach/
 : Keep the editable teaching approach file here. It says what to teach, why, who it is for, and how to teach it.

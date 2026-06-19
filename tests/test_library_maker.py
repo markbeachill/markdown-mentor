@@ -57,3 +57,59 @@ def test_remove_file_from_library_removes_by_number_and_makes_backup(tmp_path: P
     assert "File: two.md" not in text
     assert (tmp_path / "library.backup.md").is_file()
     assert (tmp_path / "library-manifest.md").is_file()
+
+from markdown_mentor.build_pack import build_library
+
+
+def _library_text(name: str, fingerprint: str, body: str) -> str:
+    delim = "=" * 70
+    return (
+        "<!-- markdown-library-file: true -->\n"
+        "# Markdown Library File\n\n"
+        f"{delim}\nSOURCE START\nFile: {name}\nFingerprint: {fingerprint}\n{delim}\n\n"
+        f"{body}\n"
+        f"{delim}\nSOURCE END: {name}\n{delim}\n"
+    )
+
+
+def test_build_library_imports_existing_library_as_separate_sources(tmp_path: Path):
+    sources = tmp_path / "sources"
+    sources.mkdir()
+    (sources / "old-library.md").write_text(_library_text("one.md", "abc123", "One"), encoding="utf-8")
+
+    result = build_library(sources, tmp_path / "new-library.md")
+
+    text = result.pack_path.read_text(encoding="utf-8")
+    assert "<!-- markdown-library-file: true -->" in text
+    assert "SOURCE START" in text
+    assert "File: one.md" in text
+    assert "old-library.md" not in text.split("---", 1)[-1]
+    assert result.converted_count == 1
+
+
+def test_build_library_skips_duplicate_imported_sources_by_default(tmp_path: Path):
+    sources = tmp_path / "sources"
+    sources.mkdir()
+    (sources / "library-a.md").write_text(_library_text("one.md", "abc123", "One"), encoding="utf-8")
+    (sources / "library-b.md").write_text(_library_text("copy-of-one.md", "abc123", "One again"), encoding="utf-8")
+
+    result = build_library(sources, tmp_path / "new-library.md")
+
+    text = result.pack_path.read_text(encoding="utf-8")
+    assert text.count("SOURCE START") == 1
+    assert any(r.note.startswith("not added:") for r in result.records)
+    manifest = result.manifest_path.read_text(encoding="utf-8")
+    assert "not added: duplicate source fingerprint" in manifest
+
+
+def test_build_library_allows_duplicate_imported_sources_with_switch(tmp_path: Path):
+    sources = tmp_path / "sources"
+    sources.mkdir()
+    (sources / "library-a.md").write_text(_library_text("one.md", "abc123", "One"), encoding="utf-8")
+    (sources / "library-b.md").write_text(_library_text("copy-of-one.md", "abc123", "One again"), encoding="utf-8")
+
+    result = build_library(sources, tmp_path / "new-library.md", allow_duplicates=True)
+
+    text = result.pack_path.read_text(encoding="utf-8")
+    assert text.count("SOURCE START") == 2
+    assert result.converted_count == 2
