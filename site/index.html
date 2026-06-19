@@ -10,17 +10,17 @@
 <header class="site-header">
   <h1>Markdown Mentor</h1>
   <p>Make a source library, use AI to draft teaching materials, then export them.</p>
-  <nav aria-label="Main navigation"><a href="index.html">Home</a> <a href="pages/workflow.html">Workflow</a> <a href="pages/start-project.html">Start project</a> <a href="pages/library-maker.html">Make Markdown Library</a> <a href="pages/markdown-mentor.html">Markdown Mentor</a> <a href="pages/prompts.html">Prompts</a> <a href="pages/library.html">Examples</a> <a href="pages/style-builder.html">Style file</a> <a href="pages/install.html">Install</a></nav>
+  <nav aria-label="Main navigation"><a href="index.html">Home</a> <a href="pages/workflow.html">Workflow</a> <a href="pages/start-project.html">Start project</a> <a href="pages/library-maker.html">Make Markdown Library</a> <a href="pages/markdown-mentor.html">Markdown Mentor</a> <a href="pages/download.html">Download</a> <a href="pages/prompts.html">Prompts</a> <a href="pages/library.html">Examples</a> <a href="pages/style-builder.html">Style file</a> <a href="pages/install.html">Install</a></nav>
 </header>
 <main>
-
+<section class="callout"><p><strong>Easiest start:</strong> download <code>setup-markdown-mentor.py</code> into a new folder and run it there.</p><p><a href="pages/download.html">Download the user scripts</a></p></section>
 <section class="card-grid">
-  <article class="card"><h2>1. Make a Markdown library</h2><p>Put your source files in one project folder. Use <code>make-markdown-library</code> to combine files, folders, ZIPs, nested ZIPs, and existing Markdown library files into one Markdown library file.</p><p><a href="pages/library-maker.html">Read about Make Markdown Library</a></p></article>
-  <article class="card"><h2>2. Plan with AI</h2><p>Use the prompts inside the project folder to create a teaching approach and a teaching materials pack. The AI helps; the user decides.</p><p><a href="pages/workflow.html">See the workflow</a></p></article>
-  <article class="card"><h2>3. Export finished files</h2><p>Save AI-created Markdown materials in <code>5-draft-materials/</code>, then use <code>markdown-mentor export</code> to make DOCX, PPTX, HTML, or PDF files.</p><p><a href="pages/markdown-mentor.html">Read about Markdown Mentor</a></p></article>
+  <article class="card"><h2>1. Set up a project folder</h2><p>The setup file downloads the two working scripts and creates the standard folders for your sources, prompts, drafts, style file, and exports.</p><p><a href="pages/start-project.html">Start a project</a></p></article>
+  <article class="card"><h2>2. Make a Markdown library</h2><p>Put your source files in <code>1-source-files/</code>. Run <code>python make-markdown-library.py make</code> to create one source library for AI.</p><p><a href="pages/library-maker.html">Read about Make Markdown Library</a></p></article>
+  <article class="card"><h2>3. Plan and create with AI</h2><p>Use the prompt files in the project folders to create a teaching approach and draft materials as Markdown files.</p><p><a href="pages/workflow.html">See the workflow</a></p></article>
+  <article class="card"><h2>4. Export finished files</h2><p>Save Markdown materials in <code>5-draft-materials/</code>, then run <code>python make-teaching-materials.py export docx</code>.</p><p><a href="pages/markdown-mentor.html">Read about exports</a></p></article>
 </section>
 <section class="callout"><p><strong>Main rule:</strong> Python checks files. AI and the user check teaching fit.</p></section>
-
 </main>
 </body>
 </html>

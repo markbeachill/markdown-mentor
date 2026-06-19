@@ -1,66 +1,74 @@
-# Install for testing
+# Install and setup notes
 
-Markdown Mentor is still an early prototype. These instructions are for testers who are comfortable installing a Python tool.
+Markdown Mentor has two routes.
 
-## What gets installed
+## Normal-user route
 
-The install gives you two commands:
+Most users should not clone the repository or install the package.
+
+They should use the website download route:
+
+1. Make a new folder for a project.
+2. Download `setup-markdown-mentor.py` into that folder.
+3. Run:
+
+```bash
+python setup-markdown-mentor.py
+```
+
+The setup file downloads:
 
 ```text
-make-markdown-library
-markdown-mentor
+make-markdown-library.py
+make-teaching-materials.py
 ```
 
-`make-markdown-library` makes and manages Markdown library files.
+Then it creates the project folders and starter files.
 
-`markdown-mentor` creates project folders, shows the workflow guide, and exports finished materials.
+## Source conversion notes
 
-## Check Python
+The single-file script can read plain text, Markdown, HTML, and CSV files directly.
 
-Open your command window and run:
+For Word, PowerPoint, PDF, and some other formats, it may need MarkItDown.
+
+If the script says MarkItDown is needed, run:
 
 ```bash
-python --version
+python -m pip install "markitdown[all]"
 ```
 
-You need Python 3.10 or newer.
-
-If `python` does not work on Mac or Linux, try:
+Then run the library command again:
 
 ```bash
-python3 --version
+python make-markdown-library.py make
 ```
 
-## Install this project for testing
+## Export notes
 
-From the repository folder, run:
+DOCX export may need:
+
+```bash
+python -m pip install python-docx
+```
+
+PPTX export may need:
+
+```bash
+python -m pip install python-pptx
+```
+
+PDF export needs LibreOffice.
+
+## Developer/tester route
+
+Developers and testers can install the package from the repository folder:
 
 ```bash
 pip install -e ".[dev]"
 ```
 
-This installs Markdown Mentor and its Python dependencies, including MarkItDown.
-
-## Create a test project
+Then run:
 
 ```bash
-markdown-mentor new-project my-project
-```
-
-Put source files in:
-
-```text
-my-project/1-source-files/
-```
-
-Then from inside `my-project`, run:
-
-```bash
-make-markdown-library new 1-source-files -o 2-markdown-library/markdown-library.md
-```
-
-Then show the guide:
-
-```bash
-markdown-mentor guide my-project
+pytest
 ```

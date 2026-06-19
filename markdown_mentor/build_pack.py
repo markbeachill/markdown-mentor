@@ -267,6 +267,17 @@ def _convert_sources(
             suffix = path.suffix.lower()
 
             if suffix in {".md", ".markdown"}:
+                if path.name.startswith("prompt-"):
+                    records.append(SourceRecord(
+                        name=path.name,
+                        relative_path=_relative_to_source(path, source_path),
+                        suffix=suffix,
+                        size_bytes=len(data),
+                        checksum=_checksum(data),
+                        converted=False,
+                        note="skipped: project prompt file",
+                    ))
+                    continue
                 try:
                     text = data.decode("utf-8")
                 except UnicodeDecodeError:

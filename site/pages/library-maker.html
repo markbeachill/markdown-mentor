@@ -1,39 +1,42 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Make Markdown Library</title>
-  <link rel="stylesheet" href="../css/style.css">
-</head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Make Markdown Library</title><link rel="stylesheet" href="../css/style.css"></head>
 <body>
 <header class="site-header">
   <h1>Make Markdown Library</h1>
-  <p>A general-purpose tool for turning source files into one Markdown library file.</p>
-  <nav aria-label="Main navigation"><a href="../index.html">Home</a> <a href="workflow.html">Workflow</a> <a href="start-project.html">Start project</a> <a href="library-maker.html">Make Markdown Library</a> <a href="markdown-mentor.html">Markdown Mentor</a> <a href="prompts.html">Prompts</a> <a href="library.html">Examples</a> <a href="style-builder.html">Style file</a> <a href="install.html">Install</a></nav>
+  <p>Turn source files, folders, ZIPs, and existing libraries into one structured Markdown file.</p>
+  <nav aria-label="Main navigation"><a href="../index.html">Home</a> <a href="workflow.html">Workflow</a> <a href="start-project.html">Start project</a> <a href="library-maker.html">Make Markdown Library</a> <a href="markdown-mentor.html">Markdown Mentor</a> <a href="download.html">Download</a> <a href="prompts.html">Prompts</a> <a href="library.html">Examples</a> <a href="style-builder.html">Style file</a> <a href="install.html">Install</a></nav>
 </header>
 <main>
-
-<p><strong>Make Markdown Library</strong> is the general-purpose source tool. It is useful even outside Markdown Mentor.</p>
-<p>It takes source files and makes one Markdown library file plus a manifest.</p>
-<h2>It can read</h2>
+<p>Make Markdown Library is the general-purpose source tool. It combines your source files into one Markdown library file that AI can read as a set of separate sources.</p>
+<h2>Normal-user command</h2>
+<pre><code>python make-markdown-library.py make</code></pre>
+<p>This reads <code>1-source-files/</code> and writes:</p>
+<pre><code>2-markdown-library/markdown-library.md
+2-markdown-library/markdown-library-manifest.md</code></pre>
+<h2>What it can read</h2>
 <ul><li>folders</li><li>individual files</li><li>ZIP files</li><li>nested ZIP files</li><li>existing Markdown library files</li></ul>
-<h2>Commands</h2>
+<p>If the source folder contains an existing Markdown library file, the tool imports each source section from that library as a separate source. It does not add the old library as one large file.</p>
+<h2>Project prompt files</h2>
+<p>Files named <code>prompt-*.md</code> are ignored by the library builder. They are instructions for the user, not source material.</p>
+<h2>Duplicates</h2>
+<p>Duplicates are skipped by default. If a duplicate is skipped, the tool prints:</p>
+<pre><code>not added - filename</code></pre>
+<p>Use this only if you deliberately want duplicate source material:</p>
+<pre><code>python make-markdown-library.py make --allow-duplicates</code></pre>
+<h2>Useful commands</h2>
+<pre><code>python make-markdown-library.py make
+python make-markdown-library.py add more-sources.zip
+python make-markdown-library.py list
+python make-markdown-library.py remove-file 3
+python make-markdown-library.py check-file</code></pre>
+<h2>Developer/tester package commands</h2>
 <pre><code>make-markdown-library new 1-source-files -o 2-markdown-library/markdown-library.md
 make-markdown-library add 2-markdown-library/markdown-library.md more-sources.zip
 make-markdown-library list 2-markdown-library/markdown-library.md
 make-markdown-library remove-file 2-markdown-library/markdown-library.md 3
 make-markdown-library check-file 2-markdown-library/markdown-library.md</code></pre>
-<h2>Existing library files</h2>
-<p>If the source folder contains an existing Markdown library file, the tool imports each source section from that library. It does not add the whole old library as one big source. The new library still reads as a set of separate files for AI processing.</p>
-<h2>Duplicates</h2>
-<p>Duplicates are skipped by default using the source fingerprint. If a duplicate is skipped, the command prints <code>not added - filename</code>. To include duplicates deliberately, add <code>--allow-duplicates</code>.</p>
-<pre><code>make-markdown-library new 1-source-files -o 2-markdown-library/markdown-library.md --allow-duplicates
-make-markdown-library add 2-markdown-library/markdown-library.md more-sources.zip --allow-duplicates</code></pre>
-<h2>Manifest</h2>
-<p>The tool creates and maintains <code>2-markdown-library/markdown-library-manifest.md</code>. The manifest lists the source files and gives each one a number. Use that number with <code>remove-file</code>.</p>
-<section class="callout"><p>This tool checks file structure only. It does not decide whether the sources are good enough for teaching.</p></section>
-
+<section class="callout"><p>This tool checks file structure only. It does not decide whether sources are good enough for teaching.</p></section>
 </main>
 </body>
 </html>

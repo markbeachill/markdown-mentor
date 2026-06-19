@@ -1,28 +1,26 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Markdown Mentor tool</title>
-  <link rel="stylesheet" href="../css/style.css">
-</head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Markdown Mentor tool</title><link rel="stylesheet" href="../css/style.css"></head>
 <body>
 <header class="site-header">
   <h1>Markdown Mentor tool</h1>
-  <p>The teaching-material workflow and export tool.</p>
-  <nav aria-label="Main navigation"><a href="../index.html">Home</a> <a href="workflow.html">Workflow</a> <a href="start-project.html">Start project</a> <a href="library-maker.html">Make Markdown Library</a> <a href="markdown-mentor.html">Markdown Mentor</a> <a href="prompts.html">Prompts</a> <a href="library.html">Examples</a> <a href="style-builder.html">Style file</a> <a href="install.html">Install</a></nav>
+  <p>Guide the teaching workflow and export finished Markdown materials.</p>
+  <nav aria-label="Main navigation"><a href="../index.html">Home</a> <a href="workflow.html">Workflow</a> <a href="start-project.html">Start project</a> <a href="library-maker.html">Make Markdown Library</a> <a href="markdown-mentor.html">Markdown Mentor</a> <a href="download.html">Download</a> <a href="prompts.html">Prompts</a> <a href="library.html">Examples</a> <a href="style-builder.html">Style file</a> <a href="install.html">Install</a></nav>
 </header>
 <main>
-
-<p><strong>Markdown Mentor</strong> is the teaching-material workflow and export tool.</p>
-<h2>Commands</h2>
-<pre><code>markdown-mentor new-project my-project
-markdown-mentor guide my-project
+<p>The normal-user teaching script is <code>make-teaching-materials.py</code>. It does not send files to AI. It reminds the user of the workflow and exports Markdown files saved in <code>5-draft-materials/</code>.</p>
+<h2>Show the guide</h2>
+<pre><code>python make-teaching-materials.py guide</code></pre>
+<h2>Export</h2>
+<pre><code>python make-teaching-materials.py export docx
+python make-teaching-materials.py export pptx
+python make-teaching-materials.py export html
+python make-teaching-materials.py export pdf</code></pre>
+<p>The script reads the style file at <code>style/style.md</code> and saves finished files in <code>6-final-exports/</code>.</p>
+<h2>Developer/tester package command</h2>
+<pre><code>markdown-mentor guide my-project
 markdown-mentor export 5-draft-materials -f docx -o 6-final-exports -s style/style.md</code></pre>
-<h2>What each command does</h2>
-<ul><li><code>new-project</code> creates the numbered project folder and starter files.</li><li><code>guide</code> shows the workflow steps in the terminal.</li><li><code>export</code> converts finished Markdown teaching materials into DOCX, PPTX, HTML, or PDF.</li></ul>
-<section class="callout"><p>The AI steps happen in your own AI tool. Markdown Mentor does not send files to AI.</p></section>
-
+<section class="callout"><p>Teaching judgement still happens in AI prompts and user review. The Python tools handle files.</p></section>
 </main>
 </body>
 </html>

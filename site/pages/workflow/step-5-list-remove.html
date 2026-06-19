@@ -10,15 +10,15 @@
 <header class="site-header">
   <h1>Step 5. List or remove files from the Markdown library</h1>
   <p>List or remove files from the Markdown library</p>
-  <nav aria-label="Main navigation"><a href="../../index.html">Home</a> <a href="../workflow.html">Workflow</a> <a href="../start-project.html">Start project</a> <a href="../library-maker.html">Make Markdown Library</a> <a href="../markdown-mentor.html">Markdown Mentor</a> <a href="../prompts.html">Prompts</a> <a href="../library.html">Examples</a> <a href="../style-builder.html">Style file</a> <a href="../install.html">Install</a></nav>
+  <nav aria-label="Main navigation"><a href="../../index.html">Home</a> <a href="../workflow.html">Workflow</a> <a href="../start-project.html">Start project</a> <a href="../library-maker.html">Make Markdown Library</a> <a href="../markdown-mentor.html">Markdown Mentor</a> <a href="../download.html">Download</a> <a href="../prompts.html">Prompts</a> <a href="../library.html">Examples</a> <a href="../style-builder.html">Style file</a> <a href="../install.html">Install</a></nav>
 </header>
 <main>
 
 <section class="callout"><p><strong>Teaching and learning view:</strong> Check what went into the library and remove accidental or duplicate sources.</p></section>
 <h2>What to do</h2>
 <p>List, then remove if needed:</p>
-<pre><code>make-markdown-library list 2-markdown-library/markdown-library.md
-make-markdown-library remove-file 2-markdown-library/markdown-library.md 3</code></pre>
+<pre><code>python make-markdown-library.py list
+python make-markdown-library.py remove-file 3</code></pre>
 <p>The number comes from the list command. The tool updates the library and manifest and makes a backup.</p>
 <p>Duplicates are skipped automatically when you make or add to a library, unless you use <code>--allow-duplicates</code>. If the tool skips a duplicate, it prints <code>not added - filename</code>.</p>
 <h2>Check before moving on</h2>

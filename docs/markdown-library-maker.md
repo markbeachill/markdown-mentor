@@ -1,62 +1,102 @@
 # Make Markdown Library
 
-`make-markdown-library` is the general-purpose source tool.
+Make Markdown Library is the general-purpose source tool.
 
-It turns a file, folder, ZIP, nested ZIP, or existing Markdown library file into one structured Markdown library file.
+It turns source files into one structured Markdown library file that an AI can read as a set of separate sources.
 
-It creates and maintains:
+## Normal-user script
+
+In the simple website route, users run:
+
+```bash
+python make-markdown-library.py make
+```
+
+This assumes the standard project folders:
+
+```text
+1-source-files/
+2-markdown-library/
+```
+
+It creates:
 
 ```text
 2-markdown-library/markdown-library.md
 2-markdown-library/markdown-library-manifest.md
 ```
 
-The manifest lists the source files in the library. The list numbers can be used to remove a source later.
-
 ## Commands
 
-Make a new library:
+```bash
+python make-markdown-library.py setup
+python make-markdown-library.py make
+python make-markdown-library.py add more-sources.zip
+python make-markdown-library.py list
+python make-markdown-library.py remove-file 3
+python make-markdown-library.py check-file
+```
+
+## Files it can work with
+
+The tool can work with:
+
+- folders
+- individual files
+- ZIP files
+- nested ZIP files
+- existing Markdown library files
+
+If it finds an existing Markdown library file, it imports the source sections inside that library as separate sources. It does not add the old library as one large file. This keeps the new library readable to AI as a set of files.
+
+## Duplicates
+
+Project prompt files named `prompt-*.md` are ignored by the library builder. They are instructions for the user, not source material.
+
+Duplicates are skipped by default.
+
+If a duplicate is skipped, the tool prints:
+
+```text
+not added - filename
+```
+
+Use this only if you deliberately want duplicates:
+
+```bash
+python make-markdown-library.py make --allow-duplicates
+```
+
+or:
+
+```bash
+python make-markdown-library.py add more-sources.zip --allow-duplicates
+```
+
+## Remove a file
+
+First list the files:
+
+```bash
+python make-markdown-library.py list
+```
+
+Then remove the file by number:
+
+```bash
+python make-markdown-library.py remove-file 3
+```
+
+The tool makes a backup before rewriting the library file.
+
+## Developer/tester package command
+
+The installed package also provides:
 
 ```bash
 make-markdown-library new 1-source-files -o 2-markdown-library/markdown-library.md
-```
-
-If the source folder contains an existing Markdown library file, the tool imports the source sections from that library. It does not add the whole old library as one big source file. The new library still reads as a set of separate files for AI processing.
-
-Duplicates are skipped by default. If a duplicate is skipped, the command prints `not added - filename`. To deliberately include duplicates, add `--allow-duplicates`:
-
-```bash
-make-markdown-library new 1-source-files -o 2-markdown-library/markdown-library.md --allow-duplicates
-```
-
-Add more sources:
-
-```bash
 make-markdown-library add 2-markdown-library/markdown-library.md more-sources.zip
-```
-
-To add duplicates anyway:
-
-```bash
-make-markdown-library add 2-markdown-library/markdown-library.md more-sources.zip --allow-duplicates
-```
-
-List sources:
-
-```bash
 make-markdown-library list 2-markdown-library/markdown-library.md
-```
-
-Remove the third listed source:
-
-```bash
 make-markdown-library remove-file 2-markdown-library/markdown-library.md 3
-```
-
-Check the file structure:
-
-```bash
 make-markdown-library check-file 2-markdown-library/markdown-library.md
 ```
-
-This check only checks that the Markdown library file is technically usable. It does not decide whether the source material is good enough for teaching.

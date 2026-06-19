@@ -1,33 +1,31 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Install for testing</title>
-  <link rel="stylesheet" href="../css/style.css">
-</head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Install and setup</title><link rel="stylesheet" href="../css/style.css"></head>
 <body>
 <header class="site-header">
-  <h1>Install for testing</h1>
-  <p>Install the early prototype and create a test project.</p>
-  <nav aria-label="Main navigation"><a href="../index.html">Home</a> <a href="workflow.html">Workflow</a> <a href="start-project.html">Start project</a> <a href="library-maker.html">Make Markdown Library</a> <a href="markdown-mentor.html">Markdown Mentor</a> <a href="prompts.html">Prompts</a> <a href="library.html">Examples</a> <a href="style-builder.html">Style file</a> <a href="install.html">Install</a></nav>
+  <h1>Install and setup</h1>
+  <p>Use the simple download route, or install the full package for development.</p>
+  <nav aria-label="Main navigation"><a href="../index.html">Home</a> <a href="workflow.html">Workflow</a> <a href="start-project.html">Start project</a> <a href="library-maker.html">Make Markdown Library</a> <a href="markdown-mentor.html">Markdown Mentor</a> <a href="download.html">Download</a> <a href="prompts.html">Prompts</a> <a href="library.html">Examples</a> <a href="style-builder.html">Style file</a> <a href="install.html">Install</a></nav>
 </header>
 <main>
-
-<p>Markdown Mentor is still an early prototype. These instructions are for testers who are comfortable installing a Python tool.</p>
+<h2>Most users: download one setup file</h2>
+<p>You do not need to clone the repository.</p>
+<p><a class="button" href="../downloads/setup-markdown-mentor.py" download>Download setup-markdown-mentor.py</a></p>
+<pre><code>python setup-markdown-mentor.py</code></pre>
+<p>This downloads the two working scripts and creates the project folders in the current folder.</p>
 <h2>Check Python</h2>
 <pre><code>python --version</code></pre>
 <p>You need Python 3.10 or newer. On Mac or Linux, try <code>python3 --version</code> if <code>python</code> does not work.</p>
-<h2>Install from the repository folder</h2>
-<pre><code>pip install -e &quot;.[dev]&quot;</code></pre>
-<h2>Create a project</h2>
-<pre><code>markdown-mentor new-project my-project</code></pre>
-<h2>Show the guide</h2>
-<pre><code>markdown-mentor guide my-project</code></pre>
-<h2>First project command</h2>
-<pre><code>cd my-project
-make-markdown-library new 1-source-files -o 2-markdown-library/markdown-library.md</code></pre>
-
+<h2>Optional source conversion helper</h2>
+<p>Plain text, Markdown, HTML, and CSV can be read directly by the simple script. Word, PDF, and PowerPoint files may need MarkItDown.</p>
+<pre><code>python -m pip install "markitdown[all]"</code></pre>
+<h2>Optional export helpers</h2>
+<pre><code>python -m pip install python-docx python-pptx</code></pre>
+<p>PDF export needs LibreOffice.</p>
+<h2>Developers and testers</h2>
+<p>Use this only if you are working on the repository itself.</p>
+<pre><code>pip install -e ".[dev]"
+pytest</code></pre>
 </main>
 </body>
 </html>

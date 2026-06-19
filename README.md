@@ -8,50 +8,59 @@ The project follows one source-of-truth workflow:
 docs/canonical-workflow.md
 ```
 
-## The two tools
+## Normal user route
 
-### Make Markdown Library
+Most users do not need to clone this repository or install the full package.
 
-`make-markdown-library` is the general-purpose source tool. It turns source materials into one structured Markdown library file.
+The website provides three downloadable Python files:
 
-It works with folders, individual files, ZIP files, nested ZIP files, and existing Markdown library files. If it finds an existing library, it imports the sources inside it as separate sources, so AI can still read the new library as a set of files.
-
-Common commands:
-
-```bash
-make-markdown-library new 1-source-files -o 2-markdown-library/markdown-library.md
-make-markdown-library add 2-markdown-library/markdown-library.md more-sources.zip
-make-markdown-library list 2-markdown-library/markdown-library.md
-make-markdown-library remove-file 2-markdown-library/markdown-library.md 3
-make-markdown-library check-file 2-markdown-library/markdown-library.md
+```text
+site/downloads/setup-markdown-mentor.py
+site/downloads/make-markdown-library.py
+site/downloads/make-teaching-materials.py
 ```
 
-### Markdown Mentor
+When the site is published, they are available from:
 
-`markdown-mentor` is the teaching-material workflow and export tool.
-
-Common commands:
-
-```bash
-markdown-mentor new-project my-project
-markdown-mentor guide my-project
-markdown-mentor export 5-draft-materials -f docx -o 6-final-exports -s style/style.md
+```text
+https://markbeachill.github.io/markdown-mentor/downloads/setup-markdown-mentor.py
+https://markbeachill.github.io/markdown-mentor/downloads/make-markdown-library.py
+https://markbeachill.github.io/markdown-mentor/downloads/make-teaching-materials.py
 ```
 
-`guide` shows the workflow in the terminal. It does not send anything to AI.
+Normal workflow:
 
-## Start a project
-
-Create a project folder:
+1. Make a new folder for a teaching project.
+2. Download `setup-markdown-mentor.py` into that folder.
+3. Run:
 
 ```bash
-markdown-mentor new-project my-project
+python setup-markdown-mentor.py
 ```
 
-This creates:
+The setup file downloads the two working scripts and creates the project folders.
+
+Then put source files in `1-source-files/` and run:
+
+```bash
+python make-markdown-library.py make
+```
+
+When draft Markdown teaching materials are ready in `5-draft-materials/`, export them:
+
+```bash
+python make-teaching-materials.py export docx
+```
+
+Use `pptx`, `html`, or `pdf` instead of `docx` when needed.
+
+## What the setup file creates
 
 ```text
 my-project/
+  setup-markdown-mentor.py
+  make-markdown-library.py
+  make-teaching-materials.py
   README-FIRST.md
   1-source-files/
     prompt-find-more-source-materials.md
@@ -69,19 +78,57 @@ my-project/
     style.md
 ```
 
-Put your source files in `1-source-files/`, then run this from inside the project folder:
+## The two tools
+
+### Make Markdown Library
+
+`make-markdown-library` is the general-purpose source tool in the package.
+
+The normal-user script is:
+
+```text
+make-markdown-library.py
+```
+
+It turns source materials into one structured Markdown library file.
+
+It works with folders, individual files, ZIP files, nested ZIP files, and existing Markdown library files. If it finds an existing library, it imports the sources inside it as separate sources, so AI can still read the new library as a set of files.
+
+Normal-user commands:
 
 ```bash
-make-markdown-library new 1-source-files -o 2-markdown-library/markdown-library.md
+python make-markdown-library.py make
+python make-markdown-library.py add more-sources.zip
+python make-markdown-library.py list
+python make-markdown-library.py remove-file 3
+python make-markdown-library.py check-file
 ```
+
+Project prompt files named `prompt-*.md` are ignored by the library builder. They are instructions for the user, not source material.
 
 Duplicates are skipped by default. If a duplicate is skipped, the tool prints `not added - filename`. Use `--allow-duplicates` only when you deliberately want duplicates.
 
-The tool also creates:
+### Markdown Mentor / teaching materials
+
+`markdown-mentor` is the package command for the teaching-material workflow and export tool.
+
+The normal-user script is:
 
 ```text
-2-markdown-library/markdown-library-manifest.md
+make-teaching-materials.py
 ```
+
+Normal-user commands:
+
+```bash
+python make-teaching-materials.py guide
+python make-teaching-materials.py export docx
+python make-teaching-materials.py export pptx
+python make-teaching-materials.py export html
+python make-teaching-materials.py export pdf
+```
+
+PDF export needs LibreOffice. DOCX and PPTX export need the Python packages named in the error message if they are not already installed.
 
 ## AI steps
 
@@ -103,28 +150,26 @@ Python checks files.
 AI and the user check teaching fit.
 ```
 
-## Export
+## Developer/tester route
 
-When the AI-created Markdown files are saved in `5-draft-materials/`, export them:
+The full repository is for development, testing, and maintaining the website.
 
-```bash
-markdown-mentor export 5-draft-materials -f docx -o 6-final-exports -s style/style.md
-```
-
-Use `pptx`, `html`, or `pdf` instead of `docx` when needed.
-
-PDF export needs LibreOffice.
-
-## Install for testing
-
-This is still an early prototype. For now, testers should install from the repository folder:
+Install from the repository folder:
 
 ```bash
 pip install -e ".[dev]"
 ```
 
-Then run:
+Run tests:
 
 ```bash
 pytest
+```
+
+Package commands are also available in this route:
+
+```bash
+markdown-mentor new-project my-project
+markdown-mentor guide my-project
+make-markdown-library new 1-source-files -o 2-markdown-library/markdown-library.md
 ```

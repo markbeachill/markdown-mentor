@@ -4,45 +4,51 @@ This folder keeps one teaching-material project in order.
 
 ## What goes where
 
-1-source-files/
-: Put the PDFs, Word files, slides, notes, readings, examples, ZIP files, existing Markdown library files, and other source files here.
+`1-source-files/`
+: Put the PDFs, Word files, slides, notes, readings, examples, ZIP files, and other source files here. The prompt file in this folder is ignored by the library builder.
 
-2-markdown-library/
-: Make Markdown Library saves the combined Markdown library file and manifest here. If an existing Markdown library is placed in `1-source-files/`, its source sections are imported as separate sources. Duplicates are skipped by default and shown as `not added - filename`.
+`2-markdown-library/`
+: The combined Markdown library file and manifest go here.
 
-3-teaching-approach/
+`3-teaching-approach/`
 : Keep the editable teaching approach file here. It says what to teach, why, who it is for, and how to teach it.
 
-4-teaching-materials-pack/
+`4-teaching-materials-pack/`
 : Keep the editable teaching materials pack here. It says which teaching materials you want AI to create.
 
-5-draft-materials/
+`5-draft-materials/`
 : Save each AI-created Markdown teaching material here before export.
 
-6-final-exports/
-: Markdown Mentor saves Word, PowerPoint, HTML, and PDF exports here.
+`6-final-exports/`
+: Finished Word, PowerPoint, HTML, and PDF exports go here.
 
-style/
-: Keep the Markdown style file here. The default is style/style.md.
+`style/`
+: Keep the Markdown style file here. The default is `style/style.md`.
 
 ## First command
 
-After you put source files into 1-source-files, run this from inside this project folder:
+After you put source files into `1-source-files/`, run this from inside this project folder:
 
 ```bash
-make-markdown-library new 1-source-files -o 2-markdown-library/markdown-library.md
+python make-markdown-library.py make
 ```
 
-The command creates:
+This creates:
 
 ```text
 2-markdown-library/markdown-library.md
 2-markdown-library/markdown-library-manifest.md
 ```
 
+Developer/tester package command:
+
+```bash
+make-markdown-library new 1-source-files -o 2-markdown-library/markdown-library.md
+```
+
 ## Next AI step
 
-Upload 2-markdown-library/markdown-library.md to your AI tool and use:
+Upload `2-markdown-library/markdown-library.md` to your AI tool and use:
 
 ```text
 3-teaching-approach/prompt-create-teaching-approach.md
@@ -56,10 +62,16 @@ Save the final approach as:
 
 ## Export command
 
-When your draft Markdown materials are saved in 5-draft-materials, run:
+When your draft Markdown materials are saved in `5-draft-materials/`, run:
+
+```bash
+python make-teaching-materials.py export docx
+```
+
+Use `pptx`, `html`, or `pdf` instead of `docx` when you need another format.
+
+Developer/tester package command:
 
 ```bash
 markdown-mentor export 5-draft-materials -f docx -o 6-final-exports -s style/style.md
 ```
-
-Use `pptx`, `html`, or `pdf` instead of `docx` when you need another format.

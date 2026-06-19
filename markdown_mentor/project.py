@@ -48,7 +48,15 @@ style/
 
 ## First command
 
-After you put source files into 1-source-files, run this from inside this project folder:
+After you put source files into 1-source-files, run this from inside this project folder.
+
+Normal-user script command:
+
+```bash
+python make-markdown-library.py make
+```
+
+Developer/tester package command:
 
 ```bash
 make-markdown-library new 1-source-files -o 2-markdown-library/markdown-library.md
@@ -78,6 +86,14 @@ Save the final approach as:
 ## Export command
 
 When your draft Markdown materials are saved in 5-draft-materials, run:
+
+Normal-user script command:
+
+```bash
+python make-teaching-materials.py export docx
+```
+
+Developer/tester package command:
 
 ```bash
 markdown-mentor export 5-draft-materials -f docx -o 6-final-exports -s style/style.md

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Download the user scripts</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header class="site-header">
+  <h1>Download the user scripts</h1>
+  <p>Start a Markdown Mentor project without cloning the repository.</p>
+  <nav aria-label="Main navigation"><a href="../index.html">Home</a> <a href="workflow.html">Workflow</a> <a href="start-project.html">Start project</a> <a href="library-maker.html">Make Markdown Library</a> <a href="markdown-mentor.html">Markdown Mentor</a> <a href="download.html">Download</a> <a href="prompts.html">Prompts</a> <a href="library.html">Examples</a> <a href="style-builder.html">Style file</a> <a href="install.html">Install</a></nav>
+</header>
+<main>
+<section class="callout">
+  <p><strong>Normal route:</strong> download one setup file into a new folder, run it, then put your source files in <code>1-source-files/</code>.</p>
+</section>
+
+<h2>Download one setup file</h2>
+<p>Download this file into a new folder for your project:</p>
+<p><a class="button" href="../downloads/setup-markdown-mentor.py" download>Download setup-markdown-mentor.py</a></p>
+
+<h2>Run it in that folder</h2>
+<pre><code>python setup-markdown-mentor.py</code></pre>
+<p>The setup file downloads the two working scripts and creates the project folders. It only changes the folder where you run it. It does not upload your files.</p>
+
+<h2>Files the setup script downloads</h2>
+<ul>
+  <li><a href="../downloads/make-markdown-library.py" download>make-markdown-library.py</a></li>
+  <li><a href="../downloads/make-teaching-materials.py" download>make-teaching-materials.py</a></li>
+</ul>
+
+<h2>Direct links</h2>
+<pre><code>https://markbeachill.github.io/markdown-mentor/downloads/setup-markdown-mentor.py
+https://markbeachill.github.io/markdown-mentor/downloads/make-markdown-library.py
+https://markbeachill.github.io/markdown-mentor/downloads/make-teaching-materials.py</code></pre>
+
+<h2>After setup</h2>
+<ol>
+  <li>Put your source files in <code>1-source-files/</code>.</li>
+  <li>Run <code>python make-markdown-library.py make</code>.</li>
+  <li>Follow the prompt files in the project folders.</li>
+  <li>Export with <code>python make-teaching-materials.py export docx</code>.</li>
+</ol>
+
+<h2>Developer route</h2>
+<p>The repository install route is for developers and testers, not most users.</p>
+<pre><code>pip install -e ".[dev]"</code></pre>
+</main>
+</body>
+</html>

@@ -29,16 +29,57 @@ Python checks files.
 AI and the user check teaching fit.
 ```
 
+
+---
+
+# Normal-user route
+
+The normal user should not need to clone the repository or install the package.
+
+The public website provides three downloadable Python files in:
+
+```text
+site/downloads/
+  setup-markdown-mentor.py
+  make-markdown-library.py
+  make-teaching-materials.py
+```
+
+When published through GitHub Pages, these files are available at:
+
+```text
+https://markbeachill.github.io/markdown-mentor/downloads/setup-markdown-mentor.py
+https://markbeachill.github.io/markdown-mentor/downloads/make-markdown-library.py
+https://markbeachill.github.io/markdown-mentor/downloads/make-teaching-materials.py
+```
+
+For most users, the route is:
+
+1. Make a new folder for the teaching project.
+2. Download `setup-markdown-mentor.py` into that folder.
+3. Run `python setup-markdown-mentor.py` from inside that folder.
+4. The setup script downloads the two working scripts and creates the project folders.
+5. The user puts source files in `1-source-files/`.
+6. The user runs `python make-markdown-library.py make`.
+
+The full package commands, such as `markdown-mentor new-project` and `make-markdown-library new`, are still available for developers and testers.
+
 ---
 
 # The two tools
 
 ## Tool 1: Make Markdown Library
 
-Command:
+Command in the full package:
 
 ```text
 make-markdown-library
+```
+
+Downloadable user script:
+
+```text
+make-markdown-library.py
 ```
 
 This is a general-purpose tool. It is useful beyond Markdown Mentor.
@@ -86,10 +127,16 @@ It only checks whether the Markdown library file is technically usable.
 
 ## Tool 2: Markdown Mentor
 
-Command:
+Command in the full package:
 
 ```text
 markdown-mentor
+```
+
+Downloadable user script for the ordinary route:
+
+```text
+make-teaching-materials.py
 ```
 
 This is the teaching-material workflow tool.
@@ -188,19 +235,21 @@ Create a project folder before doing the work.
 
 The project folder gives the user one place for source files, AI prompts, planning files, draft Markdown materials, the style file, and final exports.
 
-Command:
+Normal-user route:
+
+```bash
+python setup-markdown-mentor.py
+```
+
+This downloads the two working scripts and creates the project folders in the current folder.
+
+Developer/tester route:
 
 ```bash
 markdown-mentor new-project my-project
 ```
 
-Output:
-
-```text
-my-project/
-```
-
-The user should work inside this folder.
+The user should work inside the project folder.
 
 ---
 
@@ -261,7 +310,13 @@ This is not a Python check. It is an AI planning conversation.
 
 Use Make Markdown Library to combine the source files into one Markdown library file.
 
-Command:
+Normal-user command from inside the project folder:
+
+```bash
+python make-markdown-library.py make
+```
+
+Developer/tester command:
 
 ```bash
 make-markdown-library new 1-source-files -o 2-markdown-library/markdown-library.md
@@ -300,7 +355,13 @@ This technical check does not decide whether the sources are good enough for tea
 
 The user may need to check what is inside the Markdown library.
 
-Command:
+Normal-user command:
+
+```bash
+python make-markdown-library.py list
+```
+
+Developer/tester command:
 
 ```bash
 make-markdown-library list 2-markdown-library/markdown-library.md
@@ -317,6 +378,14 @@ Example output:
 
 To remove the third file:
 
+Normal-user command:
+
+```bash
+python make-markdown-library.py remove-file 3
+```
+
+Developer/tester command:
+
 ```bash
 make-markdown-library remove-file 2-markdown-library/markdown-library.md 3
 ```
@@ -331,6 +400,8 @@ After a file is removed, the tool should update:
 ```
 
 The tool should make a backup before rewriting the library file.
+
+Project prompt files named `prompt-*.md` are ignored by the library builder. They are instructions for the user, not source material.
 
 Duplicates are skipped by default. To deliberately include duplicates when making or adding sources, use:
 
@@ -564,25 +635,25 @@ When the draft Markdown materials are ready, export them.
 Example DOCX export:
 
 ```bash
-markdown-mentor export 5-draft-materials -f docx -o 6-final-exports -s style/style.md
+python make-teaching-materials.py export docx
 ```
 
 Example PPTX export:
 
 ```bash
-markdown-mentor export 5-draft-materials -f pptx -o 6-final-exports -s style/style.md
+python make-teaching-materials.py export pptx
 ```
 
 Example HTML export:
 
 ```bash
-markdown-mentor export 5-draft-materials -f html -o 6-final-exports -s style/style.md
+python make-teaching-materials.py export html
 ```
 
 Example PDF export:
 
 ```bash
-markdown-mentor export 5-draft-materials -f pdf -o 6-final-exports -s style/style.md
+python make-teaching-materials.py export pdf
 ```
 
 Final exported files are saved in:
@@ -676,6 +747,14 @@ The Markdown library file should include a metadata marker, for example:
 The marker is for the tool. The rest of the library must remain plain, readable Markdown so AI can process it as a set of separate source sections.
 
 The source number is used by:
+
+Normal-user command:
+
+```bash
+python make-markdown-library.py remove-file 3
+```
+
+Developer/tester command:
 
 ```bash
 make-markdown-library remove-file 2-markdown-library/markdown-library.md 3
