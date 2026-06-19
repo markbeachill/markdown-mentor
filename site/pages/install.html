@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Install &mdash; Markdown Mentor</title>
-<meta name="description" content="How to install MarkItDown and Markdown Mentor, step by step.">
+<meta name="description" content="How testers can install Markdown Library Maker and Markdown Mentor, step by step.">
 <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
@@ -14,6 +14,8 @@
     <a class="brand" href="../index.html">markdown<span class="caret">-</span>mentor</a>
     <nav class="nav">
       <a href="../index.html">Home</a>
+      <a href="library-maker.html">Library Maker</a>
+      <a href="markdown-mentor.html">Mentor</a>
       <a href="workflow.html">Workflow</a>
       <a href="prompts.html">Prompts</a>
       <a href="library.html">Library</a>
@@ -26,36 +28,111 @@
 <section class="block">
   <div class="wrap">
     <h2>Install</h2>
-    <h3 style="margin-top:0">Two things to install</h3>
+    <h3 style="margin-top:0">Set up the early prototype</h3>
+    <p>This is not yet a normal app with a double-click installer. These instructions are for testers and technical users. Ordinary teachers and learners should not need to do this in the final version.</p>
+
     <div class="threeq">
-      <div><span class="q">What</span><span class="a">Markdown Mentor needs Python, a free tool called MarkItDown, and then Markdown Mentor itself.</span></div>
-      <div><span class="q">Why</span><span class="a">MarkItDown reads your source files. Without it, no content pack can be built. There is no fallback: this step is required.</span></div>
-      <div><span class="q">Next</span><span class="a">Follow the steps below in order. Each says what to type and what you should see.</span></div>
+      <div><span class="q">What</span><span class="a">You will install Python, MarkItDown, Markdown Library Maker, and Markdown Mentor.</span></div>
+      <div><span class="q">Why</span><span class="a">Python runs the tools. MarkItDown reads Word, PDF, PowerPoint, HTML, and text files.</span></div>
+      <div><span class="q">Next</span><span class="a">Follow the tester route below. Use the technical notes only if you already know the command line.</span></div>
     </div>
 
-    <h3>Step 1: Check you have Python</h3>
-    <p>MarkItDown needs Python 3.10 or newer. Python is a free programming language the tool runs on. Open a terminal (on Windows, search for "Command Prompt"; on Mac, open "Terminal"; on Linux, open your terminal app), then type:</p>
-    <div class="cmd"><span class="prompt">$ </span>python --version</div>
-    <p>If you see version 3.10 or higher, go to Step 2. If not, install Python from <a href="https://www.python.org/downloads/">python.org/downloads</a>. On Windows, tick "Add Python to PATH" during install. If <code class="inline">python</code> does not work, try <code class="inline">python3</code> everywhere on this page.</p>
+    <div class="callout">
+      <p class="label">Important</p>
+      <p>You do not need to understand code, but you do need to run a few commands. A command is a line of text you copy into a command window and run by pressing Enter.</p>
+    </div>
 
-    <h3>Step 2: Install MarkItDown</h3>
-    <p>MarkItDown is a free tool from Microsoft that turns Word, PDF, PowerPoint, and other files into Markdown. Install it with:</p>
-    <div class="cmd"><span class="prompt">$ </span>pip install "markitdown[all]"</div>
-    <p>This may take a minute. If <code class="inline">pip</code> is not found, try <code class="inline">python -m pip install "markitdown[all]"</code>.</p>
+    <h3>Step 1: Install Python</h3>
+    <p>Python is the free program that runs the prototype.</p>
+    <ol class="plain-list">
+      <li>Go to <a href="https://www.python.org/downloads/">python.org/downloads</a>.</li>
+      <li>Download the current Python 3 version.</li>
+      <li>Install it.</li>
+      <li>On Windows, tick <strong>Add Python to PATH</strong> before you click Install.</li>
+    </ol>
 
-    <h3>Step 3: Install Markdown Mentor</h3>
-    <p>Download or clone this project, then run this from inside the <code class="inline">markdown-mentor</code> folder (the one with the README in it):</p>
-    <div class="cmd"><span class="prompt">$ </span>pip install -e .</div>
+    <h3>Step 2: Get the project folder</h3>
+    <p>For testers, the simplest route is to download the project as a ZIP file from GitHub.</p>
+    <ol class="plain-list">
+      <li>Open the Markdown Mentor GitHub page.</li>
+      <li>Click the green <strong>Code</strong> button.</li>
+      <li>Click <strong>Download ZIP</strong>.</li>
+      <li>Open your Downloads folder.</li>
+      <li>Extract the ZIP file.</li>
+      <li>Open the extracted folder until you can see <code class="inline">README.md</code> and <code class="inline">pyproject.toml</code>.</li>
+    </ol>
+    <p>That folder is the project folder. Some commands must be run from that folder because Python needs to see <code class="inline">pyproject.toml</code>.</p>
 
-    <h3>Step 4: Check it worked</h3>
-    <div class="cmd"><span class="prompt">$ </span>markdown-mentor --version</div>
-    <p>If you see a version number, you are ready. Go to the <a href="workflow.html">Workflow</a> page and run the small example, or run <code class="inline">markdown-mentor start</code> to be walked through it.</p>
+    <h3>Step 3: Open a command window in the project folder</h3>
+    <p>Use the method for your computer.</p>
+    <div class="grid">
+      <div class="card">
+        <h3>Windows</h3>
+        <p>Open the folder that contains <code class="inline">README.md</code>. Click the address bar at the top of File Explorer. Type <code class="inline">cmd</code>. Press Enter.</p>
+      </div>
+      <div class="card">
+        <h3>Mac</h3>
+        <p>Open Terminal. Type <code class="inline">cd </code> with a space after it. Drag the project folder into the Terminal window. Press Enter.</p>
+      </div>
+      <div class="card">
+        <h3>Linux</h3>
+        <p>Open the project folder in your file manager. Right-click in the folder and choose <strong>Open in Terminal</strong>, if your file manager has that option.</p>
+      </div>
+    </div>
+
+    <h3>Step 4: Check Python</h3>
+    <p class="command-label">Command to copy</p>
+    <div class="cmd">python --version</div>
+    <p>If you see something like <code class="inline">Python 3.12.1</code>, Python is ready. If the command is not found, try this instead:</p>
+    <div class="cmd">python3 --version</div>
+
+    <h3>Step 5: Install MarkItDown</h3>
+    <p class="command-label">Command to copy</p>
+    <div class="cmd">python -m pip install "markitdown[all]"</div>
+    <p>If you used <code class="inline">python3</code> earlier, use this instead:</p>
+    <div class="cmd">python3 -m pip install "markitdown[all]"</div>
+
+    <h3>Step 6: Install the local prototype</h3>
+    <p>Run this from the project folder, the folder that contains <code class="inline">README.md</code> and <code class="inline">pyproject.toml</code>.</p>
+    <p class="command-label">Command to copy</p>
+    <div class="cmd">python -m pip install -e .</div>
+    <p>If you used <code class="inline">python3</code> earlier, use this instead:</p>
+    <div class="cmd">python3 -m pip install -e .</div>
+
+    <h3>Step 7: Check it worked</h3>
+    <p class="command-label">Check Markdown Library Maker</p>
+    <div class="cmd">markdown-library --version</div>
+    <p class="command-label">Check Markdown Mentor</p>
+    <div class="cmd">markdown-mentor --version</div>
+    <p>If both commands show a version number, the prototype is installed.</p>
+
+    <h3>Try the two tools</h3>
+    <p class="command-label">Make a source library</p>
+    <div class="cmd">markdown-library make examples/sample-sources -o content-pack.md</div>
+    <p class="command-label">Start the teaching workflow</p>
+    <div class="cmd">markdown-mentor start</div>
 
     <h3>Optional: PDF export</h3>
-    <p>To export straight to PDF, install <a href="https://www.libreoffice.org">LibreOffice</a>, a free office suite. Then use <code class="inline">-f pdf</code> when you export. If you would rather not install it, export to Word or web and use "Save as PDF" in your own software. PDF is the only feature that needs LibreOffice.</p>
+    <p>To export straight to PDF, install <a href="https://www.libreoffice.org">LibreOffice</a>, a free office suite. If you do not want to install it, export to Word or HTML and use your usual software to save as PDF.</p>
 
     <h3>If something goes wrong</h3>
-    <p>If a command is "not recognised", Python may not be on your PATH; reinstall it and tick "Add Python to PATH" on Windows. If you get a permissions error, add <code class="inline">--user</code> to the install command. If MarkItDown installs but Markdown Mentor still says it is missing, you may have more than one Python; use the same one for both.</p>
+    <ul class="plain-list">
+      <li><strong>The command is not recognised.</strong> Python may not be installed correctly. Reinstall Python and tick <strong>Add Python to PATH</strong> on Windows.</li>
+      <li><strong><code class="inline">python</code> does not work.</strong> Try <code class="inline">python3</code> instead.</li>
+      <li><strong><code class="inline">python -m pip</code> does not work.</strong> Python may not have installed pip. Try reinstalling Python from python.org.</li>
+      <li><strong>You are in the wrong folder.</strong> The command <code class="inline">python -m pip install -e .</code> only works in the folder that contains <code class="inline">README.md</code> and <code class="inline">pyproject.toml</code>.</li>
+    </ul>
+
+    <details class="technical-appendix">
+      <summary>Technical appendix</summary>
+      <p>The prototype currently requires Python 3.10 or newer. It installs as an editable local package with <code class="inline">python -m pip install -e .</code>. MarkItDown is installed from PyPI with the optional <code class="inline">[all]</code> extras so it can read more file types.</p>
+      <p>Useful commands:</p>
+      <div class="cmd">python --version
+python -m pip install "markitdown[all]"
+python -m pip install -e .
+markdown-library --version
+markdown-mentor --version</div>
+    </details>
 
     <div class="callout">
       <p class="label">Official MarkItDown pages</p>

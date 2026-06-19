@@ -1,8 +1,8 @@
-"""Check whether a content pack is ready to teach from.
+"""Check whether a Markdown library/content pack is ready to teach from.
 
-Plain English: this looks at a content pack and points out likely problems
-before you ask an AI to build teaching materials from it. A thin or messy pack
-usually leads to thin or messy materials.
+Plain English: this looks at a Markdown library file and points out likely
+teaching problems before you ask an AI to build teaching materials from it. A
+thin or messy source library usually leads to thin or messy materials.
 
 Who does what:
 - Markdown Mentor (this code) runs the check and writes a readiness note.
@@ -88,7 +88,7 @@ def check_pack(pack_path: str | Path, goal: str = "") -> ReadinessReport:
     """Run the readiness check on a content pack file.
 
     Arguments:
-        pack_path: the content pack Markdown file to check.
+        pack_path: the Markdown library/content pack file to check.
         goal: an optional teaching goal, used to tailor the wording.
 
     Returns a ReadinessReport. A readiness note is also written next to the
@@ -96,7 +96,7 @@ def check_pack(pack_path: str | Path, goal: str = "") -> ReadinessReport:
     """
     pack_path = Path(pack_path).expanduser().resolve()
     if not pack_path.is_file():
-        raise FileNotFoundError(f"Content pack not found: {pack_path}")
+        raise FileNotFoundError(f"Markdown library/content pack not found: {pack_path}")
 
     full_text = pack_path.read_text(encoding="utf-8")
     sources = _split_sources(full_text)
@@ -205,7 +205,7 @@ def _write_note(pack_path: Path, goal: str, report: ReadinessReport) -> Path:
     lines = [
         "# Content Pack Readiness Note",
         "",
-        "This note lists possible problems with your content pack. It does not "
+        "This note lists possible teaching problems with your Markdown library/content pack. It does not "
         "stop you from continuing. Use it to decide whether to add or fix "
         "sources before you build teaching materials.",
         "",

@@ -14,6 +14,8 @@
     <a class="brand" href="../index.html">markdown<span class="caret">-</span>mentor</a>
     <nav class="nav">
       <a href="../index.html">Home</a>
+      <a href="library-maker.html">Library Maker</a>
+      <a href="markdown-mentor.html">Mentor</a>
       <a href="workflow.html">Workflow</a>
       <a href="prompts.html">Prompts</a>
       <a href="library.html">Library</a>
@@ -34,7 +36,7 @@
     </div>
     <div class="callout">
       <p class="label">How to use a prompt</p>
-      <p>Press <strong>Copy</strong>. Open your AI chatbot. Paste the prompt. Then paste your own content (your content pack, brief, and so on) where the prompt says <code class="inline">[PASTE ... HERE]</code>. The Copy button copies whatever is in the box, including your edits.</p>
+      <p>Press <strong>Copy</strong>. Open your AI chatbot. Paste the prompt. Then paste your own content (your Markdown library/content pack, brief, and so on) where the prompt says <code class="inline">[PASTE ... HERE]</code>. The Copy button copies whatever is in the box, including your edits.</p>
     </div>
 
       <article class="prompt-card">
@@ -52,7 +54,7 @@
         <div class="body">
           <textarea id="suggest_teaching_briefs" spellcheck="false" aria-label="Suggest teaching briefs prompt, editable">You are helping a teacher decide what to teach from a set of source materials.
 
-I will give you a content pack. It contains several sources, each wrapped in
+I will give you a Markdown library/content pack. It contains several sources, each wrapped in
 SOURCE START and SOURCE END markers.
 
 Read the whole pack. Then suggest two or three different Teaching Briefs that
@@ -70,7 +72,7 @@ For each suggested brief, use this format:
 Use plain English. Keep each brief short. After the briefs, add one sentence
 saying which brief the sources support best, and why.
 
-Here is the content pack:
+Here is the Markdown library/content pack:
 
 [PASTE YOUR CONTENT PACK HERE]</textarea>
         </div>
@@ -83,7 +85,7 @@ Here is the content pack:
         </div>
         <div class="meta">
           <dl>
-            <dt>AI gets</dt><dd>your content pack, your teaching goal, and (if you have it) the readiness note from Markdown Mentor.</dd>
+            <dt>AI gets</dt><dd>your Markdown library/content pack, your teaching goal, and (if you have it) the readiness note from Markdown Mentor.</dd>
             <dt>AI makes</dt><dd>a short list of what is missing or weak, and what kind of source would fix each gap.</dd>
             <dt>You check</dt><dd>that the suggestions are realistic for you to find or write, and that you are not being asked to add private student data or copyrighted material you do not have permission to use.</dd>
           </dl>
@@ -91,7 +93,7 @@ Here is the content pack:
         <div class="body">
           <textarea id="improve_content_pack" spellcheck="false" aria-label="Improve the content pack prompt, editable">You are reviewing a set of teaching sources to help a teacher strengthen them.
 
-I will give you a teaching goal and a content pack. I may also give you a
+I will give you a teaching goal and a Markdown library/content pack. I may also give you a
 readiness note that lists possible problems.
 
 Read everything. Then tell me, in plain English:
@@ -127,7 +129,7 @@ should more be added first?
         </div>
         <div class="meta">
           <dl>
-            <dt>AI gets</dt><dd>your content pack, your Teaching Brief, your Pedagogy</dd>
+            <dt>AI gets</dt><dd>your Markdown library/content pack, your Teaching Brief, your Pedagogy</dd>
             <dt>AI makes</dt><dd>a numbered inventory. Each item names one material to create, with enough detail to generate it later.</dd>
             <dt>You check</dt><dd>that the list is the right size, covers the brief, and does not include anything the sources cannot support. It is far easier to fix the plan now than to fix many finished documents later.</dd>
           </dl>
@@ -137,7 +139,7 @@ should more be added first?
 Your job is only to produce a clear plan.
 
 You will receive five things:
-1. A content pack (the source material).
+1. A Markdown library/content pack (the source material).
 2. A Teaching Brief (what to teach).
 3. A Pedagogy Specification (how to teach it).
 4. Teaching Material Specifications (the shapes each material must take).
@@ -186,7 +188,7 @@ Here are the five inputs:
         </div>
         <div class="meta">
           <dl>
-            <dt>AI gets</dt><dd>your content pack, your Pedagogy Specification, the matching Teaching Material Specification, and the one inventory item you want to make now.</dd>
+            <dt>AI gets</dt><dd>your Markdown library/content pack, your Pedagogy Specification, the matching Teaching Material Specification, and the one inventory item you want to make now.</dd>
             <dt>AI makes</dt><dd>one finished teaching material, written in Markdown, ready to save as a .md file and export with Markdown Mentor.</dd>
             <dt>You check</dt><dd>that the material is accurate, matches the brief and pedagogy, and only uses content from the sources. Edit the Markdown before you export it if you wish.</dd>
           </dl>
@@ -195,14 +197,14 @@ Here are the five inputs:
           <textarea id="generate_material" spellcheck="false" aria-label="Generate one teaching material prompt, editable">You are writing one teaching material. Write only this one item.
 
 You will receive:
-1. A content pack (the source material).
+1. A Markdown library/content pack (the source material).
 2. A Pedagogy Specification (how to teach).
 3. One Teaching Material Specification (the shape this material must take).
 4. One inventory item (the exact material to create now).
 
 Write the material in Markdown. Follow the Teaching Material Specification
 exactly. Match the tone and approach in the Pedagogy Specification. Use only
-information found in the content pack. If something needed is missing from the
+information found in the Markdown library/content pack. If something needed is missing from the
 sources, say so in a short note at the end rather than inventing it.
 
 Formatting rules for the Markdown:

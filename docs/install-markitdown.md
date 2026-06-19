@@ -1,98 +1,168 @@
-# Installing MarkItDown
+# Installing the prototype
 
-Markdown Mentor needs MarkItDown to read your source files. MarkItDown is a
-free tool from Microsoft that turns Word, PDF, PowerPoint, and other files into
-Markdown. This page explains how to install it, step by step. You do not need
-to be technical.
+Markdown Library Maker and Markdown Mentor currently run as command-line tools. This is an early tester route, not the final ordinary-user experience.
+
+The final product should not ask most teachers or learners to clone a repo or run commands. For now, testers need Python, MarkItDown, and this project folder.
 
 ## What this page is about
 
-How to put MarkItDown on your computer so Markdown Mentor can use it.
+How to install Python, MarkItDown, Markdown Library Maker, and Markdown Mentor on your computer.
 
 ## Why it matters
 
-Without MarkItDown, Markdown Mentor cannot read your source files, so it cannot
-build a content pack. There is no fallback: this step is required.
+Without MarkItDown, the tool cannot read Word, PDF, PowerPoint, HTML, and other source files.
 
 ## What you should do next
 
-Follow the steps below in order. Each step says what to type and what you
-should see.
+Follow the beginner tester route below. Use the technical notes only if you already know the command line.
 
 ---
 
-## Step 1: Check you have Python
+## Step 1: Install Python
 
-MarkItDown needs Python 3.10 or newer. Python is a free programming language
-that the tool runs on.
+Python is the free program that runs the prototype.
 
-Open a terminal:
+1. Go to https://www.python.org/downloads/ .
+2. Download the current Python 3 version.
+3. Install it.
+4. On Windows, tick **Add Python to PATH** before you click Install.
 
-- **Windows:** press the Start button, type `cmd`, and open "Command Prompt".
-- **Mac:** open the "Terminal" app (in Applications, then Utilities).
-- **Linux:** open your "Terminal" app.
+## Step 2: Get the project folder
 
-In the terminal, type this and press Enter:
+For testers, the simplest route is to download the project as a ZIP file from GitHub.
+
+1. Open the Markdown Mentor GitHub page.
+2. Click the green **Code** button.
+3. Click **Download ZIP**.
+4. Open your Downloads folder.
+5. Extract the ZIP file.
+6. Open the extracted folder until you can see `README.md` and `pyproject.toml`.
+
+That folder is the project folder. Some commands must be run from that folder because Python needs to see `pyproject.toml`.
+
+## Step 3: Open a command window in the project folder
+
+On Windows:
+
+1. Open the project folder in File Explorer.
+2. Click the address bar at the top of the window.
+3. Type `cmd`.
+4. Press Enter.
+
+This opens Command Prompt in the current folder.
+
+On Mac:
+
+1. Open Terminal.
+2. Type `cd ` with a space after it.
+3. Drag the project folder into the Terminal window.
+4. Press Enter.
+
+On Linux:
+
+1. Open the project folder in your file manager.
+2. Right-click inside the folder.
+3. Choose **Open in Terminal**, if your desktop offers that option.
+
+## Step 4: Check Python
+
+Command to copy:
 
 ```bash
 python --version
 ```
 
-If you see a version number that is 3.10 or higher (for example `Python
-3.12.1`), you are ready. Go to Step 2.
-
-If you see an error, or a version lower than 3.10, install Python first from
-the official site: https://www.python.org/downloads/ . On Windows, tick the box
-that says "Add Python to PATH" during installation. Then close and reopen the
-terminal and try `python --version` again.
-
-> On some computers the command is `python3` instead of `python`. If `python`
-> does not work, try `python3` everywhere on this page.
-
-## Step 2: Install MarkItDown
-
-In the same terminal, type this and press Enter:
+If you see something like `Python 3.12.1`, Python is ready. If the command is not found, try:
 
 ```bash
-pip install "markitdown[all]"
+python3 --version
 ```
 
-This downloads and installs MarkItDown and the extra parts that let it read
-many file types. It may take a minute. You will see lines of text scroll past.
-When it finishes, you are back at a normal prompt.
+## Step 5: Install MarkItDown
 
-> If `pip` is not found, try `python -m pip install "markitdown[all]"` instead
-> (or `python3 -m pip ...`).
-
-## Step 3: Check it worked
-
-Type this and press Enter:
+Command to copy:
 
 ```bash
-python -c "import markitdown; print('MarkItDown is installed')"
+python -m pip install "markitdown[all]"
 ```
 
-If you see `MarkItDown is installed`, you are done. If you see an error, see
-the help below.
+If you used `python3` earlier, use this instead:
+
+```bash
+python3 -m pip install "markitdown[all]"
+```
+
+## Step 6: Install the local prototype
+
+Run this from the project folder, the folder that contains `README.md` and `pyproject.toml`.
+
+Command to copy:
+
+```bash
+python -m pip install -e .
+```
+
+If you used `python3` earlier, use this instead:
+
+```bash
+python3 -m pip install -e .
+```
+
+## Step 7: Check it worked
+
+Check Markdown Library Maker:
+
+```bash
+markdown-library --version
+```
+
+Check Markdown Mentor:
+
+```bash
+markdown-mentor --version
+```
+
+If both commands show a version number, the prototype is installed.
+
+## Try the two tools
+
+Make a source library:
+
+```bash
+markdown-library make examples/sample-sources -o content-pack.md
+```
+
+Start the teaching workflow:
+
+```bash
+markdown-mentor start
+```
 
 ## If something goes wrong
 
-- **"pip is not recognised" or "command not found".** Python may not be
-  installed, or not added to your PATH. Reinstall Python from
-  https://www.python.org/downloads/ and tick "Add Python to PATH" on Windows.
-- **A permissions error.** Try adding `--user` to the install command:
-  `pip install --user "markitdown[all]"`.
-- **It installed but Markdown Mentor still says MarkItDown is missing.** You may
-  have more than one Python on your computer. Use the same Python command for
-  both MarkItDown and Markdown Mentor.
+- **The command is not recognised.** Python may not be installed correctly. On Windows, reinstall Python and tick **Add Python to PATH**.
+- **`python` does not work.** Try `python3` instead.
+- **`python -m pip` does not work.** Python may not have installed pip. Try reinstalling Python from python.org.
+- **`python -m pip install -e .` fails.** Check that you are in the project folder. You should be able to see `README.md` and `pyproject.toml` in that folder.
+- **A permissions error appears.** Try adding `--user` to the install command, for example `python -m pip install --user "markitdown[all]"`.
+
+## Technical notes
+
+The prototype currently requires Python 3.10 or newer. It installs as an editable local package with `python -m pip install -e .`. MarkItDown is installed from PyPI with the optional `[all]` extras so it can read more file types.
+
+Useful commands:
+
+```bash
+python --version
+python -m pip install "markitdown[all]"
+python -m pip install -e .
+markdown-library --version
+markdown-mentor --version
+```
 
 ## Official MarkItDown documentation
 
-For more detail, see Microsoft's own pages:
+MarkItDown is made by Microsoft, not by Markdown Mentor. For more detail, see:
 
 - Source code and full guide: https://github.com/microsoft/markitdown
-- The package on PyPI (where pip gets it): https://pypi.org/project/markitdown/
-
-MarkItDown is made by Microsoft, not by Markdown Mentor. The links above are
-the official place to check for updates and report problems with MarkItDown
-itself.
+- The package on PyPI: https://pypi.org/project/markitdown/

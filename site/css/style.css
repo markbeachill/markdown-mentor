@@ -101,7 +101,10 @@ a { color: var(--mark); }
 .steps strong.title { color: var(--ink); font-weight: 600; }
 
 /* --- code / command blocks --- */
-.cmd { font-family: var(--mono); font-size: 0.92rem; background: var(--code-bg); color: var(--code-fg); padding: 0.9rem 1.1rem; border-radius: 4px; overflow-x: auto; margin: 0 0 1.1rem; }
+.cmd { font-family: var(--mono); font-size: 0.92rem; background: var(--code-bg); color: var(--code-fg); padding: 0.9rem 1.1rem; border-radius: 4px; overflow-x: auto; margin: 0 0 1.1rem; white-space: pre-wrap; }
+.command-label { font-family: var(--mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-soft); margin-bottom: 0.35rem; }
+details.technical-appendix { border: 1px solid var(--rule); border-radius: 5px; background: #fff; padding: 1rem 1.2rem; }
+details.technical-appendix summary { cursor: pointer; color: var(--blue); font-weight: 600; }
 .cmd .prompt { color: #8fa9c7; user-select: none; }
 code.inline { font-family: var(--mono); font-size: 0.88em; background: var(--paper-edge); padding: 0.1em 0.35em; border-radius: 3px; }
 
@@ -248,3 +251,14 @@ footer .mono { font-family: var(--mono); font-size: 0.8rem; }
   text-underline-offset: 0.18em;
 }
 .steps .title a:hover { color: var(--mark); }
+
+/* --- product split pages --- */
+.product-pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+.product-card { border: 1px solid var(--rule); border-radius: 5px; background: #fff; padding: 1.2rem; box-shadow: 0 1px 0 var(--paper-edge); }
+.product-card .label { font-family: var(--mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--mark); font-weight: 700; }
+.product-card h3 { margin-top: 0.3rem; }
+.product-card ul { padding-left: 1.2rem; margin-top: 0.5rem; }
+.product-card li { margin-bottom: 0.35rem; }
+.function-list { display: grid; gap: 0.8rem; margin: 1.4rem 0; }
+.function-item { border-left: 3px solid var(--blue); background: #fff; padding: 0.8rem 1rem; border-radius: 0 4px 4px 0; }
+.function-item strong { color: var(--blue); }

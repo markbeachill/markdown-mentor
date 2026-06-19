@@ -1,14 +1,15 @@
 """The Markdown Mentor command line.
 
-Plain English: this is what you type in a terminal to use the tool. There are
-three commands:
+Plain English: Markdown Mentor is the education workflow. It helps you use a
+Markdown library file to plan, draft, and export teaching materials.
 
-    markdown-mentor build-pack <folder>     build a content pack from a folder
-    markdown-mentor check-pack <pack.md>    check whether a pack is ready
-    markdown-mentor export <file-or-folder> turn Markdown into Word/slides/web
+The general source-packing command is now separate:
 
-Run any command with --help to see its options. Every command prints what it
-did and where it saved the result, so you are never left guessing.
+    markdown-library make <file-folder-or-zip>
+    markdown-library add <library.md> <new-file-folder-or-zip>
+
+Markdown Mentor keeps `build-pack` as a teaching alias so older instructions
+still work. Run any command with --help to see its options.
 """
 
 from __future__ import annotations
@@ -20,7 +21,7 @@ from pathlib import Path
 from . import __version__
 from .build_pack import build_pack, MarkItDownMissing
 from .check_pack import check_pack
-from .export import export_path, VALID_FORMATS, LibreOfficeMissing
+VALID_FORMATS = {"docx", "pptx", "html", "pdf"}
 from .guide import run_guide
 
 
@@ -34,15 +35,17 @@ def _cmd_build_pack(args: argparse.Namespace) -> int:
         print(f"Problem: {exc}", file=sys.stderr)
         return 1
 
-    print("Content pack built.")
+    print("Teaching content pack built.")
     print(f"  Pack:     {result.pack_path}")
     print(f"  Manifest: {result.manifest_path}")
     print(f"  Sources included: {result.converted_count}")
     print(f"  Sources skipped:  {result.skipped_count}")
     if result.skipped_count:
         print("  (See the manifest for why some files were skipped.)")
-    print("\nNext step: check the pack with")
+    print("\nNext step: check the pack for teaching use with")
     print(f"  markdown-mentor check-pack \"{result.pack_path}\"")
+    print("\nFor the general source-library tool, use:")
+    print("  markdown-library make <file-folder-or-zip>")
     return 0
 
 
@@ -69,6 +72,7 @@ def _cmd_check_pack(args: argparse.Namespace) -> int:
 
 def _cmd_export(args: argparse.Namespace) -> int:
     try:
+        from .export import LibreOfficeMissing, export_path
         result = export_path(args.input, args.format, args.output_dir, args.style)
     except LibreOfficeMissing as exc:
         print(str(exc), file=sys.stderr)
@@ -94,7 +98,7 @@ def _cmd_start(args: argparse.Namespace) -> int:
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="markdown-mentor",
-        description="Turn teaching files into teaching materials, with the help of AI.",
+        description="Use a Markdown library file to plan, draft, and export teaching materials.",
     )
     parser.add_argument("--version", action="version", version=f"markdown-mentor {__version__}")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -108,24 +112,24 @@ def build_parser() -> argparse.ArgumentParser:
 
     p_build = sub.add_parser(
         "build-pack",
-        help="Build a content pack from a folder of source files.",
+        help="Teaching alias: build a content pack from a source folder.",
     )
     p_build.add_argument("folder", help="Folder containing your source files.")
-    p_build.add_argument("-o", "--output", help="Where to save the content pack (.md).")
+    p_build.add_argument("-o", "--output", help="Where to save the teaching content pack (.md).")
     p_build.add_argument("-g", "--goal", help="A one-line teaching goal to record in the pack.")
     p_build.set_defaults(func=_cmd_build_pack)
 
     p_check = sub.add_parser(
         "check-pack",
-        help="Check whether a content pack is ready to teach from.",
+        help="Check whether a Markdown library/content pack is ready to teach from.",
     )
-    p_check.add_argument("pack", help="The content pack Markdown file to check.")
+    p_check.add_argument("pack", help="The Markdown library/content pack file to check.")
     p_check.add_argument("-g", "--goal", help="The teaching goal, for context.")
     p_check.set_defaults(func=_cmd_check_pack)
 
     p_export = sub.add_parser(
         "export",
-        help="Turn Markdown teaching materials into Word, PowerPoint, or web files.",
+        help="Turn Markdown teaching materials into Word, PowerPoint, web, or PDF files.",
     )
     p_export.add_argument("input", help="A Markdown file, or a folder of Markdown files.")
     p_export.add_argument(

@@ -6,6 +6,7 @@ this code converts each Markdown file into a format people actually use:
 - DOCX  -> a Word document (good for handouts, worksheets, teacher notes)
 - PPTX  -> a PowerPoint slide deck (good for lesson slides)
 - HTML  -> a web page (good for sharing online)
+- PDF   -> a PDF document, if LibreOffice is installed
 
 Who does what:
 - The user (with the AI) writes the teaching materials as Markdown.
@@ -15,8 +16,8 @@ A "style profile" controls how Markdown parts become document styles, such as
 which heading sizes to use. Style profiles are plain text (JSON) files. A
 default profile is built in, so you do not need one to get started.
 
-PDF is not built in yet. The honest position: open the Word or HTML file and use
-'Save as PDF' or 'Print to PDF' in your own software for now.
+PDF export uses LibreOffice. If LibreOffice is not installed, export to Word or
+HTML and use 'Save as PDF' or 'Print to PDF' in your own software.
 """
 
 from __future__ import annotations

@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Step 2: Build the content pack — Markdown Mentor</title>
-<meta name="description" content="Convert the source folder into one AI-readable Markdown pack.">
+<title>Step 2: Make the Markdown library file — Markdown Mentor</title>
+<meta name="description" content="Convert source files into one AI-readable Markdown library file.">
 <link rel="stylesheet" href="../../css/style.css">
 </head>
 <body>
@@ -14,6 +14,8 @@
     <a class="brand" href="../../index.html">markdown<span class="caret">-</span>mentor</a>
     <nav class="nav">
       <a href="../../index.html">Home</a>
+      <a href="../library-maker.html">Library Maker</a>
+      <a href="../markdown-mentor.html">Mentor</a>
       <a href="../workflow.html">Workflow</a>
       <a href="../prompts.html">Prompts</a>
       <a href="../library.html">Library</a>
@@ -27,51 +29,57 @@
   <div class="wrap">
     <p class="breadcrumb"><a href="../workflow.html">Workflow</a> / Step 2</p>
     <h2>Step 2</h2>
-    <h3 style="margin-top:0">Build the content pack</h3>
-    <p class="step-owner">Who leads this step: <strong>Markdown Mentor</strong></p>
+    <h3 style="margin-top:0">Make the Markdown library file</h3>
+    <p class="step-owner">Who leads this step: <strong>Markdown Library Maker</strong></p>
 
     <div class="teaching-intro">
       <p class="label">Teaching and learning view</p>
-      <p>This step turns scattered teaching files into a stable shared text. The learner does not see this file directly, but it gives the AI a clearer base for planning and drafting.</p>
+      <p>This step turns scattered source files into a stable shared source library. The learner may never see this file directly, but it gives the AI a clearer base for planning and drafting.</p>
     </div>
 
     <div class="threeq">
-      <div><span class="q">What</span><span class="a">Markdown Mentor reads the source folder, converts supported files to Markdown, and writes one content pack plus a source manifest.</span></div>
-      <div><span class="q">Why</span><span class="a">AI tools work better when source material is clearly separated, labelled, and easy to quote from. A content pack reduces the chance that one file blurs into another.</span></div>
-      <div><span class="q">Next</span><span class="a">Read the manifest to see what was included, then check whether the pack is good enough for the teaching goal.</span></div>
+      <div><span class="q">What</span><span class="a">Markdown Library Maker reads the source files, converts supported formats to Markdown, and writes one library file plus a source manifest.</span></div>
+      <div><span class="q">Why</span><span class="a">AI tools work better when source material is clearly separated, labelled, and easy to check. A library file reduces the chance that one source blurs into another.</span></div>
+      <div><span class="q">Next</span><span class="a">Read the manifest to see what was included, then let Markdown Mentor check the library for teaching use.</span></div>
     </div>
 
     <h3>What to do</h3>
     <ol class="plain-list">
-      <li>Run the build command on your source folder.</li>
+      <li>Make a Markdown library file from your source folder.</li>
       <li>Open the manifest and check that important files were included.</li>
-      <li>Open the content pack and scan the headings and source boundaries.</li>
+      <li>Open the library file and scan the headings and source boundaries.</li>
       <li>Fix missing or wrongly converted sources before moving on.</li>
     </ol>
 
     <div class="callout">
       <p class="label">Check before moving on</p>
-      <p>Ask: does the content pack represent the sources clearly enough for an AI to use without confusion?</p>
+      <p>Ask: does the Markdown library file represent the sources clearly enough for an AI to use without confusion?</p>
     </div>
 
     <section class="technical-appendix" aria-labelledby="technical-appendix">
       <h2 id="technical-appendix">Technical appendix</h2>
       <p>This is the practical detail for running or finding the step in the repo.</p>
-    <h3>Commands</h3>
-    <div class="cmd"><span class="prompt">$ </span>markdown-mentor build-pack examples/sample-sources -g &quot;teach thesis statements&quot;</div>
+      <h3>Command to copy</h3>
+      <div class="cmd">markdown-library make examples/sample-sources -o content-pack.md -p "teach thesis statements"</div>
+      <h3>Teaching alias</h3>
+      <div class="cmd">markdown-mentor build-pack examples/sample-sources -g "teach thesis statements"</div>
+      <h3>Add sources later</h3>
+      <div class="cmd">markdown-library add content-pack.md ./more-sources</div>
       <h3>Files and details</h3>
       <ul class="plain-list">
-      <li>The content pack is usually written to <code class="inline">content-pack.md</code>.</li>
-      <li>The manifest is usually written to <code class="inline">content-pack-manifest.md</code>.</li>
-      <li>Each source is wrapped in clear source-start and source-end markers.</li>
-      <li>The build step records source paths, file sizes, and checksums in the manifest.</li>
+        <li>The general output is a <strong>Markdown library file</strong>.</li>
+        <li>In the teaching workflow, this file can also be called an <strong>Educational Content Training Pack</strong>.</li>
+        <li>The manifest is written next to the library file, for example <code class="inline">content-pack-manifest.md</code>.</li>
+        <li>Each source is wrapped in clear source-start and source-end markers.</li>
+        <li>The build step records source paths, file sizes, and checksums in the manifest.</li>
       </ul>
+      <p>See also: <a href="../library-maker.html">Markdown Library Maker</a>.</p>
     </section>
 
     <div class="page-nav">
       <a class="btn" href="step-1-collect-sources.html">Previous: Collect sources</a>
       <a class="btn" href="../workflow.html">Back to workflow</a>
-      <a class="btn primary" href="step-3-check-pack.html">Next: Check the pack</a>
+      <a class="btn primary" href="step-3-check-pack.html">Next: Check it for teaching use</a>
     </div>
   </div>
 </section>

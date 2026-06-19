@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Markdown Library Maker — Markdown Mentor</title>
+<meta name="description" content="A general-purpose tool for making one structured Markdown library file from many source files.">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">markdown<span class="caret">-</span>mentor</a>
+    <nav class="nav">
+      <a href="../index.html">Home</a>
+      <a href="library-maker.html">Library Maker</a>
+      <a href="markdown-mentor.html">Mentor</a>
+      <a href="workflow.html">Workflow</a>
+      <a href="prompts.html">Prompts</a>
+      <a href="library.html">Library</a>
+      <a href="style-builder.html">Style</a>
+      <a href="install.html">Install</a>
+    </nav>
+  </div>
+</header>
+
+<section class="block">
+  <div class="wrap">
+    <h2>Markdown Library Maker</h2>
+    <h3 style="margin-top:0">Make one clean Markdown file from many source files</h3>
+
+    <div class="threeq">
+      <div><span class="q">What</span><span class="a">A general-purpose source-packing tool. It makes one structured Markdown library file from a file, folder, or ZIP.</span></div>
+      <div><span class="q">Why</span><span class="a">AI tools work better when source material is clearly labelled, separated, and traceable.</span></div>
+      <div><span class="q">Next</span><span class="a">Use it first when you want to give an AI a clean source library.</span></div>
+    </div>
+
+    <p>Markdown Library Maker is not only for teaching. You can use it for research, project notes, policy documents, writing sources, meeting packs, or any other set of files you want to turn into one AI-readable Markdown file.</p>
+
+    <div class="callout">
+      <p class="label">Plain name</p>
+      <p>In the teaching workflow, the same kind of file may be called an Educational Content Training Pack. The general name is simpler: a Markdown library file.</p>
+    </div>
+
+    <h3>Functions</h3>
+    <div class="function-list">
+      <div class="function-item"><strong>Make a new library file.</strong><br>Convert a source file, folder, or ZIP into one Markdown library file.</div>
+      <div class="function-item"><strong>Add sources to a library.</strong><br>Add a new file, folder, or ZIP to an existing Markdown library file.</div>
+      <div class="function-item"><strong>List sources.</strong><br>Show the source files recorded inside the library file.</div>
+      <div class="function-item"><strong>Check the file structure.</strong><br>Check that source-start and source-end markers are present and balanced.</div>
+      <div class="function-item"><strong>Write a manifest.</strong><br>Create or update a source manifest showing what was included or skipped.</div>
+    </div>
+
+    <h3>Commands</h3>
+    <p class="command-label">Make a new Markdown library file</p>
+    <div class="cmd">markdown-library make ./sources -o my-library.md</div>
+
+    <p class="command-label">Add more files later</p>
+    <div class="cmd">markdown-library add my-library.md ./more-sources</div>
+
+    <p class="command-label">List the sources inside the library</p>
+    <div class="cmd">markdown-library list my-library.md</div>
+
+    <p class="command-label">Check the source markers</p>
+    <div class="cmd">markdown-library check my-library.md</div>
+
+    <h3>What the file contains</h3>
+    <ul class="plain-list">
+      <li>a short header</li>
+      <li>the purpose, if you gave one</li>
+      <li>clear source-start and source-end markers</li>
+      <li>source file names and paths</li>
+      <li>source fingerprints</li>
+      <li>converted Markdown text</li>
+      <li>a separate source manifest next to the library file</li>
+    </ul>
+
+    <h3>When to use Markdown Mentor instead</h3>
+    <p>Use <a href="markdown-mentor.html">Markdown Mentor</a> when your purpose is teaching or learning. Markdown Mentor starts from a Markdown library file and helps you check, plan, generate, and export teaching materials.</p>
+
+    <section class="technical-appendix" aria-labelledby="technical-appendix">
+      <h2 id="technical-appendix">Technical appendix</h2>
+      <p>The command-line entry point is <code class="inline">markdown-library</code>. The implementation lives mainly in <code class="inline">markdown_mentor/build_pack.py</code> and <code class="inline">markdown_mentor/library_cli.py</code>.</p>
+      <ul class="plain-list">
+        <li><code class="inline">build_library()</code> makes a new library file.</li>
+        <li><code class="inline">add_to_library()</code> adds sources to an existing library.</li>
+        <li><code class="inline">list_library_sources()</code> lists recorded sources.</li>
+        <li><code class="inline">check_library_format()</code> checks source markers.</li>
+      </ul>
+    </section>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>Markdown Mentor &mdash; plain tools, plain English.</span>
+    <span class="mono"><a href="https://github.com/markbeachill/markdown-mentor">github.com/markbeachill/markdown-mentor</a></span>
+  </div>
+</footer>
+
+<script src="../js/copy.js"></script>
+</body>
+</html>
