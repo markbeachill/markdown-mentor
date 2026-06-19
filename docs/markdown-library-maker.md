@@ -1,62 +1,48 @@
-# Markdown Library Maker
+# Make Markdown Library
 
-Markdown Library Maker is the general-purpose part of the project.
+`make-markdown-library` is the general-purpose source tool.
 
-It turns source files into one structured Markdown file. The file can then be pasted into an AI chatbot or used by another workflow.
+It turns a file, folder, ZIP, or nested ZIP into one structured Markdown library file.
 
-## What it is for
+It creates and maintains:
 
-Use it when you have several source files and want one clean file that keeps them separate and traceable.
+```text
+2-markdown-library/markdown-library.md
+2-markdown-library/markdown-library-manifest.md
+```
 
-Examples:
-
-- teaching source packs
-- research notes
-- project documentation
-- policy documents
-- meeting notes
-- writing research
-- AI context packs
+The manifest lists the source files in the library. The list numbers can be used to remove a source later.
 
 ## Commands
 
-Make a new library file:
+Make a new library:
 
 ```bash
-markdown-library make ./sources -o my-library.md
+make-markdown-library new 1-source-files -o 2-markdown-library/markdown-library.md
 ```
 
-Add more files later:
+Add more sources:
 
 ```bash
-markdown-library add my-library.md ./new-sources
+make-markdown-library add 2-markdown-library/markdown-library.md more-sources.zip
 ```
 
-List the sources inside a library file:
+List sources:
 
 ```bash
-markdown-library list my-library.md
+make-markdown-library list 2-markdown-library/markdown-library.md
 ```
 
-Check the source markers:
+Remove the third listed source:
 
 ```bash
-markdown-library check my-library.md
+make-markdown-library remove-file 2-markdown-library/markdown-library.md 3
 ```
 
-## What the file contains
+Check the file structure:
 
-A Markdown library file contains:
+```bash
+make-markdown-library check-file 2-markdown-library/markdown-library.md
+```
 
-- a short header
-- the purpose, if you gave one
-- source-start and source-end markers
-- the original file name or path
-- a source fingerprint
-- the converted Markdown text
-
-A source manifest is written next to the library file. It lists every file the tool found and says whether it was included or skipped.
-
-## How Markdown Mentor uses it
-
-Markdown Mentor uses the same file format for teaching. In the teaching workflow, the Markdown library file is also called an Educational Content Training Pack.
+This check only checks that the Markdown library file is technically usable. It does not decide whether the source material is good enough for teaching.

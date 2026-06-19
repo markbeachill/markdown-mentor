@@ -1,114 +1,26 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Markdown Mentor</title>
-<meta name="description" content="Make Markdown library files, then use them to create teaching materials with the help of AI.">
-<link rel="stylesheet" href="css/style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Markdown Mentor</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
-<header class="topbar">
-  <div class="wrap">
-    <a class="brand" href="index.html">markdown<span class="caret">-</span>mentor</a>
-    <nav class="nav">
-      <a href="index.html">Home</a>
-      <a href="pages/library-maker.html">Library Maker</a>
-      <a href="pages/markdown-mentor.html">Mentor</a>
-      <a href="pages/workflow.html">Workflow</a>
-      <a href="pages/prompts.html">Prompts</a>
-      <a href="pages/library.html">Library</a>
-      <a href="pages/style-builder.html">Style</a>
-      <a href="pages/install.html">Install</a>
-    </nav>
-  </div>
+<header class="site-header">
+  <h1>Markdown Mentor</h1>
+  <p>Make a source library, use AI to draft teaching materials, then export them.</p>
+  <nav><a href="pages/workflow.html">Workflow</a> <a href="pages/start-project.html">Start project</a> <a href="pages/library-maker.html">Make Markdown Library</a> <a href="pages/markdown-mentor.html">Markdown Mentor</a> <a href="pages/prompts.html">Prompts</a> <a href="pages/library.html">Examples</a> <a href="pages/style-builder.html">Style file</a> <a href="pages/install.html">Install</a></nav>
 </header>
+<main>
 
-<section class="hero">
-  <div class="wrap">
-    <p class="eyebrow">Two plain tools for AI-ready Markdown work</p>
-    <h1>Make a clean Markdown library. Then build teaching materials from it.</h1>
-    <p class="lead">Markdown Library Maker gathers source files into one structured Markdown file. Markdown Mentor uses that file to help you plan, draft, and export teaching materials.</p>
-    <div class="actions">
-      <a class="btn primary" href="pages/library-maker.html">Start with Library Maker</a>
-      <a class="btn" href="pages/workflow.html">See the teaching workflow</a>
-    </div>
-  </div>
+<section class="card-grid">
+  <article class="card"><h2>1. Make a Markdown library</h2><p>Put your source files in one project folder. Use <code>make-markdown-library</code> to combine files, folders, ZIPs, and nested ZIPs into one Markdown library file.</p><p><a href="pages/library-maker.html">Read about Make Markdown Library</a></p></article>
+  <article class="card"><h2>2. Plan with AI</h2><p>Use the prompts inside the project folder to create a teaching approach and a teaching materials pack. The AI helps; the user decides.</p><p><a href="pages/workflow.html">See the workflow</a></p></article>
+  <article class="card"><h2>3. Export finished files</h2><p>Save AI-created Markdown materials in <code>5-draft-materials/</code>, then use <code>markdown-mentor export</code> to make DOCX, PPTX, HTML, or PDF files.</p><p><a href="pages/markdown-mentor.html">Read about Markdown Mentor</a></p></article>
 </section>
+<section class="callout"><p><strong>Main rule:</strong> Python checks files. AI and the user check teaching fit.</p></section>
 
-<section class="block">
-  <div class="wrap">
-    <h2>What this project is</h2>
-    <div class="threeq">
-      <div><span class="q">What</span><span class="a">A source-library tool plus a teaching workflow tool.</span></div>
-      <div><span class="q">Why</span><span class="a">AI works better when source material is clearly separated, labelled, and easy to check.</span></div>
-      <div><span class="q">Next</span><span class="a">Make a Markdown library file first. Then use it in the teaching workflow if your purpose is education.</span></div>
-    </div>
-
-    <div class="product-pair">
-      <div class="product-card">
-        <p class="label">Tool 1</p>
-        <h3>Markdown Library Maker</h3>
-        <p>Creates one structured Markdown file from a file, folder, or ZIP. It can also add more files later.</p>
-        <ul>
-          <li>general-purpose</li>
-          <li>useful beyond education</li>
-          <li>keeps source boundaries and fingerprints</li>
-        </ul>
-        <p><a class="btn" href="pages/library-maker.html">Read about Library Maker</a></p>
-      </div>
-      <div class="product-card">
-        <p class="label">Tool 2</p>
-        <h3>Markdown Mentor</h3>
-        <p>Uses a Markdown library file to help plan, draft, check, and export teaching materials.</p>
-        <ul>
-          <li>education-focused</li>
-          <li>uses prompts and human review</li>
-          <li>exports Markdown to DOCX, PPTX, HTML, and PDF</li>
-        </ul>
-        <p><a class="btn" href="pages/markdown-mentor.html">Read about Markdown Mentor</a></p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="block">
-  <div class="wrap">
-    <h2>The teaching workflow</h2>
-    <ol class="steps">
-      <li><span class="who">You</span><br><strong class="title"><a href="pages/workflow/step-1-collect-sources.html">Collect sources.</a></strong> Gather the files the learner will be taught from.</li>
-      <li><span class="who">Markdown Library Maker</span><br><strong class="title"><a href="pages/workflow/step-2-build-content-pack.html">Make the Markdown library file.</a></strong> Convert the source folder into one AI-readable library.</li>
-      <li><span class="who">Markdown Mentor</span><br><strong class="title"><a href="pages/workflow/step-3-check-pack.html">Check it for teaching use.</a></strong> Run a readiness check before asking AI to plan lessons.</li>
-      <li><span class="who">You + AI</span><br><strong class="title"><a href="pages/workflow/step-4-decide-what-to-teach.html">Decide what to teach.</a></strong> Create a Teaching Brief that sets the focus.</li>
-      <li><span class="who">You</span><br><strong class="title"><a href="pages/workflow/step-5-choose-pedagogy.html">Choose how to teach it.</a></strong> Pick or adapt a Pedagogy Specification.</li>
-      <li><span class="who">You</span><br><strong class="title"><a href="pages/workflow/step-6-choose-materials.html">Choose which materials to make.</a></strong> Pick a Teaching Materials List for the purpose.</li>
-      <li><span class="who">AI, checked by you</span><br><strong class="title"><a href="pages/workflow/step-7-plan-materials.html">Plan the materials.</a></strong> Create and approve a Teaching Materials Inventory.</li>
-      <li><span class="who">AI, checked by you</span><br><strong class="title"><a href="pages/workflow/step-8-generate-materials.html">Generate each material.</a></strong> Draft one Markdown teaching material at a time.</li>
-      <li><span class="who">Markdown Mentor</span><br><strong class="title"><a href="pages/workflow/step-9-export.html">Export.</a></strong> Turn finished Markdown into practical formats.</li>
-    </ol>
-    <p><a class="btn" href="pages/workflow.html">Open the full workflow map</a></p>
-  </div>
-</section>
-
-<section class="block">
-  <div class="wrap">
-    <h2>Honest about the tool</h2>
-    <div class="callout">
-      <p class="label">Worth knowing</p>
-      <p>This is still an early local prototype. Ordinary users should not have to clone a repo or use commands in the long term. For now, the command-line version is mainly for testers and technical users.</p>
-    </div>
-    <p>The aim is a tool that is clear, honest, and easy to act on. The software converts, organises, checks, and exports. The AI proposes, plans, and drafts. You select, edit, approve, and teach.</p>
-  </div>
-</section>
-
-<footer>
-  <div class="wrap">
-    <span>Markdown Mentor &mdash; plain tools, plain English.</span>
-    <span class="mono"><a href="https://github.com/markbeachill/markdown-mentor">github.com/markbeachill/markdown-mentor</a></span>
-  </div>
-</footer>
-
-<script src="js/copy.js"></script>
+</main>
 </body>
 </html>

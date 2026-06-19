@@ -1,158 +1,128 @@
 # Markdown Mentor
 
-Make Markdown library files, then use them to create teaching materials with the help of AI.
+Markdown Mentor helps you turn source files into draft teaching materials with the help of AI, then export those materials to Word, PowerPoint, HTML, or PDF.
 
-The project now has two public parts:
+The project follows one source-of-truth workflow:
 
-1. **Markdown Library Maker** makes one structured Markdown file from many source files. This is useful in teaching, research, project work, writing, policy work, and any other context where you want to give an AI a clean source library.
-2. **Markdown Mentor** uses a Markdown library file to help teachers, tutors, lecturers, students, and self-directed learners plan, draft, and export teaching materials.
+```text
+docs/canonical-workflow.md
+```
 
-Markdown Mentor does not talk to an AI itself. It gives you structured source files and clear prompts. You use those prompts in your own AI chatbot.
+## The two tools
 
-## What each part does
+### Make Markdown Library
 
-### Markdown Library Maker
+`make-markdown-library` is the general-purpose source tool. It turns source materials into one structured Markdown library file.
 
-- **Makes a new Markdown library file.** It converts a folder, ZIP, or source file into one tidy Markdown file an AI can read.
-- **Adds more sources.** It can add a file, folder, or ZIP to an existing Markdown library file.
-- **Lists sources.** It shows which sources are inside a library file.
-- **Checks the file structure.** It checks that the source markers are present and balanced.
+It works with folders, individual files, ZIP files, and nested ZIP files.
+
+Common commands:
+
+```bash
+make-markdown-library new 1-source-files -o 2-markdown-library/markdown-library.md
+make-markdown-library add 2-markdown-library/markdown-library.md more-sources.zip
+make-markdown-library list 2-markdown-library/markdown-library.md
+make-markdown-library remove-file 2-markdown-library/markdown-library.md 3
+make-markdown-library check-file 2-markdown-library/markdown-library.md
+```
 
 ### Markdown Mentor
 
-- **Checks a library for teaching use.** It points out likely teaching risks, such as thin coverage, missing examples, missing practice, or private data.
-- **Guides the teaching workflow.** It points you to the right prompts and library files for each step.
-- **Exports finished materials.** It turns Markdown teaching materials into Word, PowerPoint, HTML, and PDF files. PDF export needs LibreOffice.
+`markdown-mentor` is the teaching-material workflow and export tool.
 
-## Who does what
-
-- **You** collect the sources, choose what to teach, and approve the plan.
-- **Markdown Library Maker** makes and updates the source library file.
-- **Markdown Mentor** checks, guides, and exports.
-- **The AI** proposes, plans, and drafts when you paste a prompt into a chatbot.
-
-## Quick command examples
-
-Make a general Markdown library file:
+Common commands:
 
 ```bash
-markdown-library make ./my-sources -o my-library.md
+markdown-mentor new-project my-project
+markdown-mentor guide my-project
+markdown-mentor export 5-draft-materials -f docx -o 6-final-exports -s style/style.md
 ```
 
-Add more sources later:
+`guide` shows the workflow in the terminal. It does not send anything to AI.
+
+## Start a project
+
+Create a project folder:
 
 ```bash
-markdown-library add my-library.md ./more-sources
+markdown-mentor new-project my-project
 ```
 
-Use the teaching workflow:
+This creates:
 
-```bash
-markdown-mentor start
+```text
+my-project/
+  README-FIRST.md
+  1-source-files/
+    prompt-find-more-source-materials.md
+  2-markdown-library/
+  3-teaching-approach/
+    teaching-approach.md
+    prompt-create-teaching-approach.md
+    prompt-check-teaching-approach.md
+  4-teaching-materials-pack/
+    teaching-materials-pack.md
+    prompt-create-teaching-materials.md
+  5-draft-materials/
+  6-final-exports/
+  style/
+    style.md
 ```
 
-Check a library/content pack for teaching use:
+Put your source files in `1-source-files/`, then run this from inside the project folder:
 
 ```bash
-markdown-mentor check-pack my-library.md -g "teach thesis statements"
+make-markdown-library new 1-source-files -o 2-markdown-library/markdown-library.md
 ```
 
-Export finished Markdown teaching materials:
+The tool also creates:
 
-```bash
-markdown-mentor export ./materials -f docx
+```text
+2-markdown-library/markdown-library-manifest.md
 ```
 
-The older command still works as a teaching alias:
+## AI steps
 
-```bash
-markdown-mentor build-pack ./my-sources
+The AI steps happen in your own AI tool. Markdown Mentor does not send files to AI.
+
+Use the prompt files in the folder where they are needed:
+
+```text
+1-source-files/prompt-find-more-source-materials.md
+3-teaching-approach/prompt-create-teaching-approach.md
+3-teaching-approach/prompt-check-teaching-approach.md
+4-teaching-materials-pack/prompt-create-teaching-materials.md
 ```
 
-That command makes an **Educational Content Training Pack**. It uses the same underlying format as a Markdown library file.
+The key rule is:
 
-## The teaching workflow
-
-The quickest way to learn the workflow is the guided command. It runs the software steps for you and points you to the right prompt for each AI step:
-
-```bash
-markdown-mentor start
+```text
+Python checks files.
+AI and the user check teaching fit.
 ```
 
-The full workflow is:
+## Export
 
-1. Collect your source files.
-2. Make a Markdown library file.
-3. Check whether the library is good enough for the teaching goal.
-4. Decide what to teach.
-5. Choose how to teach it.
-6. Choose which materials to make.
-7. Plan the materials.
-8. Generate each material.
-9. Export the finished Markdown files.
-
-There is a full walkthrough in `docs/workflow.md` and the website in `site/`.
-
-## Installing
-
-Markdown Mentor is currently a small local prototype, not a normal app with a double-click installer. The command-line instructions are for testers and technical users.
-
-For the clearest route, open `site/pages/install.html` in your browser or follow `docs/install-markitdown.md`. Those pages explain how to open a command window in the right folder.
-
-The short technical version is:
+When the AI-created Markdown files are saved in `5-draft-materials/`, export them:
 
 ```bash
-python -m pip install "markitdown[all]"
-python -m pip install -e .
-markdown-library --version
-markdown-mentor --version
+markdown-mentor export 5-draft-materials -f docx -o 6-final-exports -s style/style.md
 ```
 
-Run the second command from the folder that contains this README and `pyproject.toml`.
+Use `pptx`, `html`, or `pdf` instead of `docx` when needed.
 
-## The website
+PDF export needs LibreOffice.
 
-The `site` folder is a small website you can open in a browser with no server. It explains both parts of the project:
+## Install for testing
 
-- Markdown Library Maker
-- Markdown Mentor
-
-To open it on your own computer, open `site/index.html` in your web browser.
-
-### Publishing the website with GitHub Pages
-
-This repository includes a GitHub Actions workflow (`.github/workflows/publish-site.yml`) that publishes the `site` folder to GitHub Pages whenever the site changes on the `main` branch.
-
-To switch it on, one time:
-
-1. Push this repository to GitHub.
-2. Go to the repository's **Settings**, then **Pages**.
-3. Under **Build and deployment**, set **Source** to **GitHub Actions**.
-
-After that, every change to the `site` folder on `main` publishes automatically. The published address will be `https://markbeachill.github.io/markdown-mentor/`.
-
-The workflow uploads the `site` folder as-is. There is nothing to build: the site is plain HTML, CSS, and JavaScript. You can also run the workflow by hand from the repository's **Actions** tab.
-
-## What is honest about this tool
-
-- Ordinary users should not need to clone a repo or run commands forever. This is an early tester route, not the final product experience.
-- The readiness check is a simple, rule-based helper, not an AI judgement. Treat it as a second pair of eyes.
-- AI drafts may contain mistakes. Always read and edit what the AI produces.
-- PDF export works if you have LibreOffice installed. If you do not, export to Word or HTML and use "Save as PDF" in your own software.
-
-## Running the tests
-
-The export step has a test suite, since export is where a hidden bug would cost the most rework. To run it:
+This is still an early prototype. For now, testers should install from the repository folder:
 
 ```bash
-python -m pip install -e ".[dev]"
+pip install -e ".[dev]"
+```
+
+Then run:
+
+```bash
 pytest
 ```
-
-## The library
-
-The `library` folder holds ready-made files you can copy and adapt: a sample content pack, a sample Teaching Brief, five Pedagogy Specifications (school, ESL/EFL, undergraduate, primary, vocational), a Teaching Material Specifications catalogue, four Teaching Materials Lists (getting started, revision, tutor session, practical lesson), four prompts, two style profiles, and a source collection guide. You can build more style profiles on the website's Style page, with no need to edit JSON by hand.
-
-## Licence
-
-MIT. See `LICENSE`.

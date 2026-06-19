@@ -1,31 +1,13 @@
-"""A guided walk through the whole workflow, in the terminal.
+"""A guided walk through the Markdown Mentor teaching workflow.
 
-Plain English: this command holds your hand through the nine steps. It runs the
-teaching workflow steps for you (make the source library, check it, export) and, for the thinking
-steps, it tells you exactly which prompt to open and what to paste. It never
-talks to an AI itself. You stay in control: at each step you press Enter to go
-on, or type 's' to skip.
-
-Who does what:
-- This command runs the source-library, teaching check, and export steps.
-- It points you to the right prompt for each AI step.
-- You do the AI steps in your own chatbot and save the results.
+The guide does not talk to an AI itself. It tells the user which folders, files,
+and prompts to use. Python makes and exports files. AI and the user make
+teaching judgements.
 """
 
 from __future__ import annotations
 
 from pathlib import Path
-
-from .build_pack import build_pack, MarkItDownMissing
-from .check_pack import check_pack
-
-
-# Where the library lives, relative to the installed package. When run from a
-# clone of the repository, the library sits next to the package folder.
-def _library_root() -> Path:
-    here = Path(__file__).resolve().parent
-    candidate = here.parent / "library"
-    return candidate
 
 
 def _pause(message: str = "Press Enter to continue, or type 's' then Enter to skip: ") -> str:
@@ -43,133 +25,144 @@ def _rule() -> None:
     print("-" * 64)
 
 
-def run_guide(source_dir: str | None = None) -> int:
-    """Walk the user through the workflow. Returns an exit code."""
-    lib = _library_root()
-    prompts = lib / "prompts"
+def _is_project_folder(path: Path) -> bool:
+    return path.is_dir() and (path / "1-source-files").exists() and (path / "3-teaching-approach").exists()
+
+
+def run_guide(project_or_library: str | None = None) -> int:
+    """Walk the user through the canonical workflow. Returns an exit code."""
+    project: Path | None = None
+    library_path: Path | None = None
+
+    if project_or_library:
+        candidate = Path(project_or_library).expanduser().resolve()
+        if _is_project_folder(candidate):
+            project = candidate
+        elif candidate.is_file():
+            library_path = candidate
+        elif candidate.exists():
+            _say(f"Warning: {candidate} exists, but it does not look like a Markdown Mentor project folder.")
 
     _rule()
-    _say("Markdown Mentor: a guided run through the workflow.")
-    _say("This walks you through all nine steps. The software steps run here.")
-    _say("The thinking steps happen in your own AI chatbot; this points you to")
-    _say("the right prompt each time. Nothing here talks to an AI for you.")
+    _say("Markdown Mentor: guided teaching workflow")
+    _say("The easiest route is to work inside one project folder.")
+    _say("Make one with:  markdown-mentor new-project my-project")
+    _say("The AI steps happen in your own chatbot. This tool never sends files to AI.")
     _rule()
 
-    # Step 1: sources
-    _say("\nStep 1 of 9  -  Collect your sources  [you]")
-    _say("Put the files you want to teach from into one folder.")
-    if not source_dir:
+    if not project and not library_path:
         try:
-            source_dir = input("Folder with your source files: ").strip()
+            answer = input("Path to your project folder, or leave blank to read the guide: ").strip()
         except EOFError:
-            _say("No folder given. Stopping.")
-            return 1
-    source_path = Path(source_dir).expanduser()
-    if not source_path.is_dir():
-        _say(f"That folder was not found: {source_path}")
-        return 1
+            answer = ""
+        if answer:
+            candidate = Path(answer).expanduser().resolve()
+            if _is_project_folder(candidate):
+                project = candidate
+            elif candidate.is_file():
+                library_path = candidate
+            else:
+                _say(f"Warning: not found, or not a Markdown Mentor project folder: {candidate}")
 
-    goal = ""
-    try:
-        goal = input("One-line teaching goal (optional): ").strip()
-    except EOFError:
-        goal = ""
+    source_dir = project / "1-source-files" if project else Path("1-source-files")
+    library_file = project / "2-markdown-library" / "markdown-library.md" if project else (library_path or Path("2-markdown-library/markdown-library.md"))
+    teaching_approach = project / "3-teaching-approach" / "teaching-approach.md" if project else Path("3-teaching-approach/teaching-approach.md")
+    materials_pack = project / "4-teaching-materials-pack" / "teaching-materials-pack.md" if project else Path("4-teaching-materials-pack/teaching-materials-pack.md")
+    draft_dir = project / "5-draft-materials" if project else Path("5-draft-materials")
+    export_dir = project / "6-final-exports" if project else Path("6-final-exports")
+    style_file = project / "style" / "style.md" if project else Path("style/style.md")
 
-    # Step 2: build
-    _say("\nStep 2 of 9  -  Make the Markdown library file  [software]")
-    if _pause() != "s":
-        try:
-            result = build_pack(source_path, None, goal)
-        except MarkItDownMissing as exc:
-            _say("\n" + str(exc))
-            return 2
-        _say(f"Made library/content pack: {result.pack_path}")
-        _say(f"Manifest: {result.manifest_path}")
-        _say(f"Sources included: {result.converted_count}, skipped: {result.skipped_count}")
-        pack_path = result.pack_path
+    p_more_sources = project / "1-source-files" / "prompt-find-more-source-materials.md" if project else Path("1-source-files/prompt-find-more-source-materials.md")
+    p_create_approach = project / "3-teaching-approach" / "prompt-create-teaching-approach.md" if project else Path("3-teaching-approach/prompt-create-teaching-approach.md")
+    p_check_approach = project / "3-teaching-approach" / "prompt-check-teaching-approach.md" if project else Path("3-teaching-approach/prompt-check-teaching-approach.md")
+    p_create_materials = project / "4-teaching-materials-pack" / "prompt-create-teaching-materials.md" if project else Path("4-teaching-materials-pack/prompt-create-teaching-materials.md")
+
+    _say("\nA. Create and develop your source materials library")
+    _say("\nStep 1 of 11  -  Create a project folder  [markdown-mentor]")
+    if project:
+        _say(f"Project folder: {project}")
     else:
-        pack_path = source_path.parent / "content-pack.md"
-        _say("Skipped. Assuming the library/content pack is at: " + str(pack_path))
-
-    # Step 3: check
-    _say("\nStep 3 of 9  -  Check the library for teaching use  [software]")
-    if _pause() != "s" and pack_path.is_file():
-        report = check_pack(pack_path, goal)
-        _say(f"Readiness note: {report.note_path}")
-        _say(f"Risks: {report.risk_count}, worth checking: {report.watch_count}")
-        if report.risk_count:
-            _say("There are risks. Read the note before going on.")
-            _say(f"If you want help improving the source library, use the prompt:")
-            _say(f"  {prompts / 'improve-content-pack.md'}")
-    else:
-        _say("Skipped.")
-
-    # Step 4: brief (AI)
-    _say("\nStep 4 of 9  -  Decide what to teach  [you + AI]")
-    _say("Write a Teaching Brief, or let the AI suggest some.")
-    _say("To get suggestions, open this prompt, paste it into your chatbot,")
-    _say("then paste your Markdown library/content pack:")
-    _say(f"  {prompts / 'suggest-teaching-briefs.md'}")
-    _say("Save your chosen brief as a Markdown file, for example brief.md.")
+        _say("Recommended command:  markdown-mentor new-project my-project")
     _pause()
 
-    # Step 5: pedagogy
-    _say("\nStep 5 of 9  -  Choose how to teach it  [you]")
-    _say("Pick a Pedagogy Specification from:")
-    _say(f"  {lib / 'pedagogy-specs'}")
-    _say("Copy one and edit it to match your learners.")
+    _say("\nStep 2 of 11  -  Collect source materials  [you]")
+    _say(f"Put the source files in: {source_dir}")
+    _say("Files can include Word, PDF, PowerPoint, Markdown, text, HTML, and ZIP files.")
     _pause()
 
-    # Step 6: materials list
-    _say("\nStep 6 of 9  -  Choose which materials to make  [you]")
-    _say("Pick a Teaching Materials List from:")
-    _say(f"  {lib / 'materials-lists'}")
+    _say("\nStep 3 of 11  -  Ask AI what other source materials may help  [optional]")
+    _say(f"Use this prompt if your source folder feels thin: {p_more_sources}")
     _pause()
 
-    # Step 7: inventory (AI)
-    _say("\nStep 7 of 9  -  Plan the materials  [AI, checked by you]")
-    _say("Open this prompt and paste it into your chatbot, then paste your")
-    _say("Markdown library/content pack, brief, pedagogy, material specifications, and list:")
-    _say(f"  {prompts / 'generate-inventory.md'}")
-    _say("The AI returns a plan. Read it carefully. This is the main checkpoint.")
+    _say("\nStep 4 of 11  -  Make the Markdown library file  [make-markdown-library]")
+    _say("Run this from inside the project folder:")
+    _say("  make-markdown-library new 1-source-files -o 2-markdown-library/markdown-library.md")
+    _say(f"The library file will live at: {library_file}")
+    _say("The tool processes folders, files, ZIPs, and nested ZIPs.")
+    _say("This is a mechanical file-making step. It does not decide what the sources are good for.")
     _pause()
 
-    # Step 8: generate (AI)
-    _say("\nStep 8 of 9  -  Generate each material  [AI, checked by you]")
-    _say("For each item in the plan, open this prompt and paste it into your")
-    _say("chatbot with the pieces it asks for:")
-    _say(f"  {prompts / 'generate-material.md'}")
-    _say("Save each result as a Markdown file in one folder, for example")
-    _say("'materials'. Make one file per material.")
+    _say("\nStep 5 of 11  -  List or remove files from the library  [optional]")
+    _say("List sources:")
+    _say("  make-markdown-library list 2-markdown-library/markdown-library.md")
+    _say("Remove the third listed source:")
+    _say("  make-markdown-library remove-file 2-markdown-library/markdown-library.md 3")
     _pause()
 
-    # Step 9: export
-    _say("\nStep 9 of 9  -  Export  [software]")
-    _say("Turn your finished Markdown into Word, slides, web, or PDF files.")
+    _say("\nB. Plan your teaching approach")
+    _say("\nStep 6 of 11  -  Create or customise the teaching approach file  [you + AI]")
+    _say(f"Teaching approach file: {teaching_approach}")
+    _say("It has four sections: What to teach, Aims of teaching, Who is being taught, How to teach.")
+    _say(f"If using AI, upload {library_file} and use: {p_create_approach}")
+    _pause()
+
+    _say("\nStep 7 of 11  -  Check the teaching approach against the library  [AI, checked by you]")
+    _say(f"Use: {p_check_approach}")
+    _say("This is a teaching judgement. Python cannot do it honestly.")
+    _say("Edit and save the final approach file afterwards.")
+    _pause()
+
+    _say("\nStep 8 of 11  -  Choose and customise a teaching materials pack  [you]")
+    _say(f"Materials pack file: {materials_pack}")
+    _say("This file says what outputs to make, such as a handout, slides, or a worksheet with answer guidance.")
+    _pause()
+
+    _say("\nC. Create your teaching materials")
+    _say("\nStep 9 of 11  -  Ask AI to create separate Markdown teaching files  [AI, checked by you]")
+    _say("Give the AI the library file, teaching approach file, and teaching materials pack.")
+    _say(f"Use: {p_create_materials}")
+    _say(f"Save each Markdown material in: {draft_dir}")
+    _pause()
+
+    _say("\nStep 10 of 11  -  Choose or customise your Markdown style file  [you]")
+    _say(f"Style file: {style_file}")
+    _say("This is a Markdown file. The export tool applies the settings it understands.")
+    _pause()
+
+    _say("\nStep 11 of 11  -  Process the materials into styled output  [markdown-mentor]")
+    _say("Recommended command from inside the project folder:")
+    _say("  markdown-mentor export 5-draft-materials -f docx -o 6-final-exports -s style/style.md")
     try:
-        materials_dir = input("Folder with your finished Markdown materials (or skip): ").strip()
+        do_export = input("Export now? Type y then Enter, or press Enter to skip: ").strip().lower()
     except EOFError:
-        materials_dir = ""
-    if materials_dir:
-        m_path = Path(materials_dir).expanduser()
-        if m_path.exists():
+        do_export = ""
+    if do_export == "y":
+        if draft_dir.exists():
             try:
-                fmt = input("Format (docx, pptx, html) [docx]: ").strip().lower() or "docx"
-                out = input("Where to save them [exports]: ").strip() or "exports"
+                fmt = input("Format (docx, pptx, html, pdf) [docx]: ").strip().lower() or "docx"
                 from .export import export_path
-                res = export_path(m_path, fmt, out, None)
-                _say(f"Converted {len(res.outputs)} file(s) to {fmt.upper()} in {out}.")
+                res = export_path(draft_dir, fmt, export_dir, style_file if style_file.exists() else None)
+                _say(f"Converted {len(res.outputs)} file(s) to {fmt.upper()} in {export_dir}.")
                 for src, dst in zip(res.inputs, res.outputs):
                     _say(f"  {src.name}  ->  {dst}")
             except (FileNotFoundError, ValueError) as exc:
                 _say(f"Problem: {exc}")
         else:
-            _say(f"That folder was not found: {m_path}")
+            _say(f"That folder was not found: {draft_dir}")
     else:
-        _say("Skipped. When ready, run:  markdown-mentor export <folder> -f docx")
+        _say("Skipped. Run the export command when your draft materials are ready.")
 
     _rule()
-    _say("That is the whole workflow. For PDF, install LibreOffice or open a Word")
-    _say("or web file and use 'Save as PDF'. Read everything the AI produced.")
+    _say("Done. Read and edit everything the AI produced before teaching from it.")
     _rule()
     return 0

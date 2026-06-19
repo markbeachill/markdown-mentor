@@ -7,7 +7,7 @@ so these are the most important tests in the project.
 
 Run them with:
 
-    pip install pytest
+    pip install -e ".[dev]"
     pytest
 """
 
@@ -16,6 +16,8 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
+
+pytest.importorskip("markdown")
 
 from markdown_mentor.export import (
     _parse_markdown,
@@ -175,11 +177,11 @@ def test_unknown_format_is_refused(tmp_path):
         export_file(src, "rtf", tmp_path / "m.rtf")
 
 
-def test_style_profile_changes_heading_size(tmp_path):
+def test_markdown_style_file_changes_heading_size(tmp_path):
     from docx import Document
 
-    style_file = tmp_path / "big.json"
-    style_file.write_text('{"h1_size_pt": 30}', encoding="utf-8")
+    style_file = tmp_path / "style.md"
+    style_file.write_text("# Style\n\n- h1_size_pt: 30\n", encoding="utf-8")
     src = tmp_path / "m.md"
     src.write_text("# Heading\n\nText.", encoding="utf-8")
     out = export_file(src, "docx", tmp_path / "m.docx", style_file)
@@ -193,11 +195,11 @@ def test_style_profile_changes_heading_size(tmp_path):
         pytest.fail("Heading not found in document")
 
 
-def test_partial_style_profile_fills_defaults(tmp_path):
+def test_partial_markdown_style_file_fills_defaults(tmp_path):
     style = load_style(None)
     assert style["body_font"]  # default present
-    partial = tmp_path / "p.json"
-    partial.write_text('{"body_font": "Times New Roman"}', encoding="utf-8")
+    partial = tmp_path / "style.md"
+    partial.write_text("# Style\n\n- body_font: Times New Roman\n", encoding="utf-8")
     merged = load_style(partial)
     assert merged["body_font"] == "Times New Roman"
     assert merged["h1_size_pt"] == style["h1_size_pt"]  # default kept

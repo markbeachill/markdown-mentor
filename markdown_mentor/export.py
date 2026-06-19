@@ -12,9 +12,9 @@ Who does what:
 - The user (with the AI) writes the teaching materials as Markdown.
 - Markdown Mentor (this code) converts them to the chosen format.
 
-A "style profile" controls how Markdown parts become document styles, such as
-which heading sizes to use. Style profiles are plain text (JSON) files. A
-default profile is built in, so you do not need one to get started.
+A Markdown style file controls how Markdown parts become document styles, such as
+which heading sizes to use. A default profile is built in, so you do not need
+one to get started.
 
 PDF export uses LibreOffice. If LibreOffice is not installed, export to Word or
 HTML and use 'Save as PDF' or 'Print to PDF' in your own software.
@@ -22,7 +22,6 @@ HTML and use 'Save as PDF' or 'Print to PDF' in your own software.
 
 from __future__ import annotations
 
-import json
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -70,15 +69,48 @@ class ExportResult:
 
 
 def load_style(style_path: str | Path | None) -> dict:
-    """Load a style profile, falling back to the built-in default.
+    """Load a Markdown style file, falling back to the built-in default.
 
-    Any keys missing from the file are filled in from the default, so a
-    partial style profile is fine.
+    The public project style file is Markdown, usually `style/style.md`.
+    The parser accepts simple lines such as `- body_font: Calibri`.
+    Any keys missing from the file are filled in from the default.
+
+    For compatibility with older projects, `.json` style files are still read
+    when they are supplied explicitly.
     """
     style = dict(DEFAULT_STYLE)
-    if style_path:
-        data = json.loads(Path(style_path).read_text(encoding="utf-8"))
-        style.update(data)
+    if not style_path:
+        return style
+
+    path = Path(style_path)
+    text = path.read_text(encoding="utf-8")
+
+    if path.suffix.lower() == ".json":
+        import json
+        style.update(json.loads(text))
+        return style
+
+    for raw in text.splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#"):
+            continue
+        if line.startswith("-"):
+            line = line[1:].strip()
+        if ":" not in line:
+            continue
+        key, value = line.split(":", 1)
+        key = key.strip().strip("`")
+        value = value.strip().strip('"').strip("'")
+        if key not in DEFAULT_STYLE:
+            continue
+        default_value = DEFAULT_STYLE[key]
+        if isinstance(default_value, int):
+            try:
+                style[key] = int(value)
+            except ValueError:
+                continue
+        else:
+            style[key] = value
     return style
 
 
@@ -431,7 +463,7 @@ def export_file(
         fmt: one of "docx", "pptx", "html", or "pdf".
         output_path: where to write the result. Defaults to the same name with
             the new extension.
-        style_path: an optional style profile (JSON) file.
+        style_path: an optional Markdown style file, usually style/style.md.
 
     Returns the path of the file that was written.
 

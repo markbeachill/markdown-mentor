@@ -1,13 +1,10 @@
-"""Make Markdown library files and teaching content packs.
+"""Make Markdown library files.
 
 Plain English: this turns a folder, ZIP, or source file into one tidy Markdown
 file that an AI chatbot can read. Each source file becomes a clearly marked
 section, so the AI can tell where one source ends and the next begins.
 
-There are two user-facing names for this idea:
-
-- Markdown Library Maker makes a general Markdown library file.
-- Markdown Mentor uses the same file as a teaching content pack.
+The user-facing command is `make-markdown-library`.
 
 Who does what:
 - The user collects the source files.
@@ -236,7 +233,7 @@ def build_library(
     purpose: str = "",
     *,
     title: str = "Markdown Library File",
-    maker_name: str = "Markdown Library Maker",
+    maker_name: str = "Make Markdown Library",
 ) -> BuildResult:
     """Build a Markdown library file from a file, folder, or ZIP.
 
@@ -246,8 +243,7 @@ def build_library(
         output_path: where to write the Markdown library file. Defaults to
             'markdown-library.md' next to the source folder or file.
         purpose: an optional one-line note recorded at the top of the library.
-        title: the heading to use for the file. Markdown Mentor uses this to
-            keep the education-facing name 'Educational Content Training Pack'.
+        title: the heading to use for the file.
         maker_name: the public name of the tool that built the file.
     """
     source_path = Path(source_path).expanduser().resolve()
@@ -269,29 +265,6 @@ def build_library(
     return BuildResult(pack_path=output_path, manifest_path=manifest_path, records=records)
 
 
-def build_pack(
-    source_dir: str | Path,
-    output_path: str | Path | None = None,
-    goal: str = "",
-) -> BuildResult:
-    """Build a teaching content pack from a folder of source files.
-
-    This is the education-facing alias used by Markdown Mentor. The underlying
-    file format is the same as a Markdown library file.
-    """
-    source_path = Path(source_dir).expanduser().resolve()
-    if not source_path.is_dir():
-        raise NotADirectoryError(f"Source folder not found: {source_path}")
-    if output_path is None:
-        output_path = source_path.parent / "content-pack.md"
-    return build_library(
-        source_path,
-        output_path,
-        goal,
-        title="Educational Content Training Pack",
-        maker_name="Markdown Mentor",
-    )
-
 
 def add_to_library(
     library_path: str | Path,
@@ -310,7 +283,8 @@ def add_to_library(
         raise FileNotFoundError(f"Source not found: {source_path}")
 
     existing_text = library_path.read_text(encoding="utf-8")
-    existing_fingerprints = set(re.findall(r"Fingerprint: (\w+)", existing_text))
+    existing_sections = _parse_library_sections(existing_text)
+    existing_fingerprints = {sec.get("fingerprint", "") for sec in existing_sections}
     manifest_path = library_path.with_name(library_path.stem + "-manifest.md")
 
     records, section_pairs = _convert_sources(source_path)
@@ -324,24 +298,15 @@ def add_to_library(
         sections_to_add.append(section)
 
     if sections_to_add:
-        today = _dt.date.today().isoformat()
-        note = [
-            "",
-            "---",
-            "",
-            f"## Sources added on {today}",
-            "",
-        ]
-        if purpose:
-            note += [f"Purpose: {purpose}", ""]
-        with library_path.open("a", encoding="utf-8") as fh:
-            if existing_text and not existing_text.endswith("\n"):
-                fh.write("\n")
-            fh.write("\n".join(note))
-            fh.write("\n".join(sections_to_add))
-            fh.write("\n")
+        new_sections: list[dict[str, str]] = []
+        for section in sections_to_add:
+            new_sections.extend(_parse_library_sections(section))
+        all_sections = existing_sections + new_sections
+        _write_library_from_sections(library_path, all_sections)
+        _write_manifest_from_sections(manifest_path, all_sections)
+    else:
+        _append_manifest(manifest_path, purpose, source_path, records)
 
-    _append_manifest(manifest_path, purpose, source_path, records)
     return BuildResult(pack_path=library_path, manifest_path=manifest_path, records=records)
 
 
@@ -392,6 +357,7 @@ def _format_section(record: SourceRecord, text: str) -> str:
     return f"{header}\n{text}\n{footer}"
 
 
+
 def _write_library(
     output_path: Path,
     purpose: str,
@@ -418,9 +384,42 @@ def _write_library(
     ]
     if purpose:
         lines += ["", f"**Purpose:** {purpose}"]
+    lines += ["", "## Source manifest", "", _manifest_table_header()]
+    for i, r in enumerate(converted, start=1):
+        lines.append(_manifest_row(r, i))
     lines += ["", "---", ""]
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text("\n".join(lines) + "\n" + "\n".join(sections), encoding="utf-8")
+
+
+def _write_library_from_sections(output_path: Path, sections: list[dict[str, str]]) -> None:
+    """Rewrite a library file from parsed source sections, with a fresh manifest."""
+    today = _dt.date.today().isoformat()
+    lines = [
+        "# Markdown Library File",
+        "",
+        "This file was built by Make Markdown Library from your source files.",
+        "It is a structured Markdown library that an AI chatbot can read. Each source below is wrapped in START and END markers so the AI can tell the sources apart.",
+        "",
+        f"- Updated on: {today}",
+        f"- Sources included: {len(sections)}",
+        "",
+        "## Source manifest",
+        "",
+        _manifest_table_header(),
+    ]
+    for i, sec in enumerate(sections, start=1):
+        record = SourceRecord(
+            name=Path(sec["file"]).name,
+            relative_path=sec["file"],
+            suffix=Path(sec["file"]).suffix.lower(),
+            size_bytes=0,
+            checksum=sec.get("fingerprint", ""),
+            converted=True,
+        )
+        lines.append(_manifest_row(record, i))
+    lines += ["", "---", ""]
+    output_path.write_text("\n".join(lines) + "\n" + "\n".join(sec["raw"].rstrip() for sec in sections) + "\n", encoding="utf-8")
 
 
 def _write_manifest(
@@ -431,7 +430,7 @@ def _write_manifest(
 ) -> None:
     """Write a human-readable list of every file we looked at."""
     lines = [
-        "# Source Manifest",
+        "# Markdown Library Manifest",
         "",
         "This is a plain list of every file the tool found, and what happened to it.",
         "",
@@ -440,8 +439,30 @@ def _write_manifest(
     if purpose:
         lines += [f"- Purpose: {purpose}"]
     lines += ["", _manifest_table_header()]
-    for r in records:
-        lines.append(_manifest_row(r))
+    for i, r in enumerate(records, start=1):
+        lines.append(_manifest_row(r, i))
+    manifest_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def _write_manifest_from_sections(manifest_path: Path, sections: list[dict[str, str]]) -> None:
+    """Write a manifest from the source sections currently in a library file."""
+    lines = [
+        "# Markdown Library Manifest",
+        "",
+        "This manifest was regenerated from the current Markdown library file.",
+        "",
+        _manifest_table_header(),
+    ]
+    for i, sec in enumerate(sections, start=1):
+        record = SourceRecord(
+            name=Path(sec["file"]).name,
+            relative_path=sec["file"],
+            suffix=Path(sec["file"]).suffix.lower(),
+            size_bytes=0,
+            checksum=sec.get("fingerprint", ""),
+            converted=True,
+        )
+        lines.append(_manifest_row(record, i))
     manifest_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
@@ -457,23 +478,96 @@ def _append_manifest(
         prefix = manifest_path.read_text(encoding="utf-8")
         lines = [prefix.rstrip(), "", "---", "", f"## Sources added on {today}", ""]
     else:
-        lines = ["# Source Manifest", "", f"## Sources added on {today}", ""]
+        lines = ["# Markdown Library Manifest", "", f"## Sources added on {today}", ""]
     lines += [f"- Source input: {source_path}"]
     if purpose:
         lines += [f"- Purpose: {purpose}"]
     lines += ["", _manifest_table_header()]
-    for r in records:
-        lines.append(_manifest_row(r))
+    start = _manifest_source_count(manifest_path) + 1 if manifest_path.exists() else 1
+    for i, r in enumerate(records, start=start):
+        lines.append(_manifest_row(r, i))
     manifest_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
+def _manifest_source_count(manifest_path: Path) -> int:
+    if not manifest_path.exists():
+        return 0
+    return len(re.findall(r"^\|\s*\d+\s*\|", manifest_path.read_text(encoding="utf-8"), flags=re.MULTILINE))
+
+
 def _manifest_table_header() -> str:
-    return "| File | Type | Size (bytes) | Fingerprint | Status |\n| --- | --- | --- | --- | --- |"
+    return "| No. | File | Type | Size (bytes) | Fingerprint | Status |\n| ---: | --- | --- | ---: | --- | --- |"
 
 
-def _manifest_row(record: SourceRecord) -> str:
+def _manifest_row(record: SourceRecord, number: int) -> str:
     status = "included" if record.converted else (record.note or "skipped")
+    size = record.size_bytes if record.size_bytes else ""
     return (
-        f"| {record.relative_path} | {record.suffix or '(none)'} | "
-        f"{record.size_bytes} | {record.checksum} | {status} |"
+        f"| {number} | {record.relative_path} | {record.suffix or ''} | "
+        f"{size} | {record.checksum} | {status} |"
     )
+
+
+def _parse_library_sections(text: str) -> list[dict[str, str]]:
+    """Return source sections from a Markdown library file."""
+    pattern = re.compile(
+        rf"{re.escape(DELIMITER)}\nSOURCE START\nFile: (?P<file>.*?)\nFingerprint: (?P<fingerprint>.*?)\n{re.escape(DELIMITER)}\n(?P<body>.*?)\n{re.escape(DELIMITER)}\nSOURCE END: .*?\n{re.escape(DELIMITER)}",
+        flags=re.DOTALL,
+    )
+    sections: list[dict[str, str]] = []
+    for match in pattern.finditer(text):
+        sections.append({
+            "file": match.group("file").strip(),
+            "fingerprint": match.group("fingerprint").strip(),
+            "raw": match.group(0),
+        })
+    return sections
+
+
+def remove_file_from_library(library_path: str | Path, selector: str | int) -> BuildResult:
+    """Remove one source section from a Markdown library by number or filename.
+
+    The number is the one printed by `make-markdown-library list`.
+    """
+    library_path = Path(library_path).expanduser().resolve()
+    if not library_path.is_file():
+        raise FileNotFoundError(f"Markdown library file not found: {library_path}")
+
+    text = library_path.read_text(encoding="utf-8")
+    sections = _parse_library_sections(text)
+    if not sections:
+        raise ValueError("No source sections were found in this Markdown library file.")
+
+    index: int | None = None
+    selector_text = str(selector).strip()
+    if selector_text.isdigit():
+        number = int(selector_text)
+        if number < 1 or number > len(sections):
+            raise ValueError(f"Source number {number} is out of range. Use `make-markdown-library list` to see the numbers.")
+        index = number - 1
+    else:
+        matches = [i for i, sec in enumerate(sections) if sec["file"] == selector_text or Path(sec["file"]).name == selector_text]
+        if not matches:
+            raise ValueError(f"No source named {selector_text!r} was found. Use `make-markdown-library list` to see names.")
+        if len(matches) > 1:
+            raise ValueError(f"More than one source matched {selector_text!r}. Remove by number instead.")
+        index = matches[0]
+
+    removed = sections.pop(index)
+    backup_path = library_path.with_name(library_path.stem + ".backup.md")
+    backup_path.write_text(text, encoding="utf-8")
+
+    _write_library_from_sections(library_path, sections)
+    manifest_path = library_path.with_name(library_path.stem + "-manifest.md")
+    _write_manifest_from_sections(manifest_path, sections)
+
+    record = SourceRecord(
+        name=Path(removed["file"]).name,
+        relative_path=removed["file"],
+        suffix=Path(removed["file"]).suffix.lower(),
+        size_bytes=0,
+        checksum=removed.get("fingerprint", ""),
+        converted=True,
+        note="removed",
+    )
+    return BuildResult(pack_path=library_path, manifest_path=manifest_path, records=[record])

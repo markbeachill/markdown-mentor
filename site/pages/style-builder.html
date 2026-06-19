@@ -1,148 +1,53 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Style builder &mdash; Markdown Mentor</title>
-<meta name="description" content="Build a style profile by choosing fonts and colours, then download the ready file.">
-<link rel="stylesheet" href="../css/style.css">
-<style>
-  .builder { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start; }
-  .builder label { display: block; font-family: var(--mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.03em; color: var(--ink-soft); margin: 0 0 0.3rem; }
-  .builder .field { margin: 0 0 1.1rem; }
-  .builder input[type=text], .builder input[type=number], .builder select { width: 100%; font-family: var(--serif); font-size: 1rem; padding: 0.5rem 0.6rem; border: 1px solid var(--rule); border-radius: 4px; background: #fff; color: var(--ink); }
-  .builder input[type=color] { width: 3rem; height: 2.4rem; border: 1px solid var(--rule); border-radius: 4px; padding: 0; background: #fff; vertical-align: middle; cursor: pointer; }
-  .builder .color-row { display: flex; align-items: center; gap: 0.6rem; }
-  .builder .color-row input[type=text] { width: auto; flex: 1; font-family: var(--mono); font-size: 0.85rem; }
-  .preview { border: 1px solid var(--rule); border-radius: 5px; padding: 1.2rem 1.3rem; background: #fff; position: sticky; top: 5rem; }
-  .preview .pv-h1 { margin: 0 0 0.4rem; line-height: 1.2; }
-  .preview .pv-h2 { margin: 0.6rem 0 0.3rem; line-height: 1.2; }
-  .preview .pv-body { margin: 0 0 0.6rem; }
-  .preview ul { margin: 0.2rem 0; }
-  .out { font-family: var(--mono); font-size: 0.82rem; background: var(--code-bg); color: var(--code-fg); padding: 1rem; border-radius: 4px; white-space: pre; overflow-x: auto; margin: 1rem 0; }
-  .builder-actions { display: flex; gap: 0.7rem; flex-wrap: wrap; margin-top: 0.5rem; }
-  @media (max-width: 40rem) { .builder { grid-template-columns: 1fr; } .preview { position: static; } }
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Create a Markdown style file</title>
+  <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-
-<header class="topbar">
-  <div class="wrap">
-    <a class="brand" href="../index.html">markdown<span class="caret">-</span>mentor</a>
-    <nav class="nav">
-      <a href="../index.html">Home</a>
-      <a href="library-maker.html">Library Maker</a>
-      <a href="markdown-mentor.html">Mentor</a>
-      <a href="workflow.html">Workflow</a>
-      <a href="prompts.html">Prompts</a>
-      <a href="library.html">Library</a>
-      <a href="style-builder.html">Style</a>
-      <a href="install.html">Install</a>
-    </nav>
-  </div>
+<header class="site-header">
+  <h1>Create a Markdown style file</h1>
+  <p>Use style/style.md to control exported document appearance.</p>
+  <nav><a href="../index.html">Home</a> <a href="workflow.html">Workflow</a> <a href="start-project.html">Start project</a> <a href="library-maker.html">Make Markdown Library</a> <a href="markdown-mentor.html">Markdown Mentor</a> <a href="prompts.html">Prompts</a> <a href="library.html">Examples</a> <a href="style-builder.html">Style file</a> <a href="install.html">Install</a></nav>
 </header>
+<main>
 
-<section class="block">
-  <div class="wrap">
-    <h2>Style builder</h2>
-    <h3 style="margin-top:0">Make a style profile without editing JSON</h3>
-    <div class="threeq">
-      <div><span class="q">What</span><span class="a">A small tool to choose fonts, sizes, and colours, then download a ready style profile file.</span></div>
-      <div><span class="q">Why</span><span class="a">A style profile controls how your exported Word, slides, and web files look. This saves you editing the file by hand.</span></div>
-      <div><span class="q">Next</span><span class="a">Set the options below, watch the preview, then download the file and use it with the <code class="inline">-s</code> option when you export.</span></div>
-    </div>
+<p>The style file controls how exported documents look. It is Markdown, so users can read and edit it like the other project files.</p>
+<p>The project style file lives here:</p>
+<pre><code>style/style.md</code></pre>
+<h2>Example style file</h2>
+<pre><code># Style
 
-    <div class="builder">
-      <div class="controls">
-        <div class="field">
-          <label for="name">Profile name</label>
-          <input type="text" id="name" value="my-style">
-        </div>
-        <div class="field">
-          <label for="body_font">Body font</label>
-          <select id="body_font">
-            <option>Calibri</option>
-            <option>Arial</option>
-            <option>Georgia</option>
-            <option>Times New Roman</option>
-            <option>Verdana</option>
-            <option>Garamond</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="body_size_pt">Body text size (points)</label>
-          <input type="number" id="body_size_pt" value="11" min="8" max="18">
-        </div>
-        <div class="field">
-          <label for="heading_font">Heading font</label>
-          <select id="heading_font">
-            <option>Calibri</option>
-            <option>Arial</option>
-            <option>Georgia</option>
-            <option>Times New Roman</option>
-            <option>Verdana</option>
-            <option>Garamond</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="heading_color_picker">Heading colour</label>
-          <div class="color-row">
-            <input type="color" id="heading_color_picker" value="#1F3864">
-            <input type="text" id="heading_color" value="1F3864" maxlength="6" aria-label="Heading colour hex code">
-          </div>
-        </div>
-        <div class="field">
-          <label for="h1_size_pt">Title size (H1, points)</label>
-          <input type="number" id="h1_size_pt" value="20" min="12" max="40">
-        </div>
-        <div class="field">
-          <label for="h2_size_pt">Section size (H2, points)</label>
-          <input type="number" id="h2_size_pt" value="16" min="10" max="32">
-        </div>
-        <div class="field">
-          <label for="h3_size_pt">Sub-section size (H3, points)</label>
-          <input type="number" id="h3_size_pt" value="13" min="9" max="28">
-        </div>
-        <div class="field">
-          <label for="html_title">Web page title</label>
-          <input type="text" id="html_title" value="Teaching material">
-        </div>
-      </div>
+## General style
 
-      <div>
-        <div class="preview" id="preview" aria-label="Live preview">
-          <div class="pv-h1">Title looks like this</div>
-          <div class="pv-body">Body text looks like this. It is the size your paragraphs will be in the exported file.</div>
-          <div class="pv-h2">A section heading</div>
-          <ul><li>A bullet point</li><li>Another point</li></ul>
-        </div>
-      </div>
-    </div>
+- body_font: Calibri
+- body_size_pt: 11
+- heading_font: Calibri
+- heading_color: 1F3864
 
-    <h3>Your style profile file</h3>
-    <p>This is the file that will be saved. You can also copy it by hand if you prefer.</p>
-    <div class="out" id="json-out">{}</div>
-    <div class="builder-actions">
-      <button class="btn primary" id="download-btn">Download the file</button>
-      <button class="copy-btn" id="copy-json" data-json="true">Copy the file</button>
-    </div>
+## Word document style
 
-    <div class="callout" style="margin-top:1.5rem">
-      <p class="label">How to use it</p>
-      <p>Save the file somewhere you can find it, then add it to your export command with <code class="inline">-s</code>, for example:<br>
-      <code class="inline">markdown-mentor export materials -f docx -s my-style.json</code></p>
-    </div>
-  </div>
-</section>
+- h1_size_pt: 20
+- h2_size_pt: 16
+- h3_size_pt: 13
 
-<footer>
-  <div class="wrap">
-    <span>Markdown Mentor &mdash; plain tools, plain English.</span>
-    <span class="mono"><a href="https://github.com/markbeachill/markdown-mentor">github.com/markbeachill/markdown-mentor</a></span>
-  </div>
-</footer>
+## Slide style
 
-<script src="../js/copy.js"></script>
-<script src="../js/style-builder.js"></script>
+- title_size_pt: 32
+- body_size_pt: 20
+
+## HTML style
+
+- html_title: Teaching material
+
+## PDF style
+
+- use_docx_conversion: true</code></pre>
+<h2>How it works</h2>
+<p>The export tool applies the settings it understands. If a setting is unclear or unsupported, it uses the default.</p>
+
+</main>
 </body>
 </html>

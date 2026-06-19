@@ -1,4 +1,4 @@
-"""Command line for Markdown Library Maker.
+"""Command line for Make Markdown Library.
 
 This is the general-purpose half of the project. It makes one structured
 Markdown library file from many source files, or adds more sources to an
@@ -17,6 +17,7 @@ from .build_pack import (
     build_library,
     check_library_format,
     list_library_sources,
+    remove_file_from_library,
 )
 
 
@@ -81,6 +82,22 @@ def _cmd_list(args: argparse.Namespace) -> int:
     return 0
 
 
+
+def _cmd_remove_file(args: argparse.Namespace) -> int:
+    try:
+        result = remove_file_from_library(args.library, args.selector)
+    except (FileNotFoundError, ValueError) as exc:
+        print(f"Problem: {exc}", file=sys.stderr)
+        return 1
+
+    removed = result.records[0].relative_path if result.records else args.selector
+    print("Source removed from Markdown library file.")
+    print(f"  Removed:  {removed}")
+    print(f"  Library:  {result.pack_path}")
+    print(f"  Manifest: {result.manifest_path}")
+    print("  A backup was saved next to the library file.")
+    return 0
+
 def _cmd_check(args: argparse.Namespace) -> int:
     try:
         report = check_library_format(args.library)
@@ -88,7 +105,7 @@ def _cmd_check(args: argparse.Namespace) -> int:
         print(f"Problem: {exc}", file=sys.stderr)
         return 1
 
-    print("Markdown library check done.")
+    print("Markdown library file check done.")
     print(f"  Sources: {report.source_count}")
     print(f"  Duplicate fingerprints: {report.duplicate_count}")
     if report.issues:
@@ -97,19 +114,20 @@ def _cmd_check(args: argparse.Namespace) -> int:
             print(f"  - {issue}")
         return 1
     print("  The file has the expected source markers.")
+    print("  This only checks the file structure. It does not judge whether the sources fit a teaching approach.")
     return 0
 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="markdown-library",
+        prog="make-markdown-library",
         description="Make one structured Markdown library file from source files.",
     )
-    parser.add_argument("--version", action="version", version=f"markdown-library {__version__}")
+    parser.add_argument("--version", action="version", version=f"make-markdown-library {__version__}")
     sub = parser.add_subparsers(dest="command", required=True)
 
     p_make = sub.add_parser(
-        "make",
+        "new",
         help="Make a new Markdown library file from a file, folder, or ZIP.",
     )
     p_make.add_argument("source", help="A source file, folder, or ZIP file.")
@@ -138,8 +156,17 @@ def build_parser() -> argparse.ArgumentParser:
     p_list.add_argument("library", help="The Markdown library file to inspect.")
     p_list.set_defaults(func=_cmd_list)
 
+
+    p_remove = sub.add_parser(
+        "remove-file",
+        help="Remove one source from a Markdown library file by list number or filename.",
+    )
+    p_remove.add_argument("library", help="The Markdown library file to edit.")
+    p_remove.add_argument("selector", help="The source number from `list`, or the filename to remove.")
+    p_remove.set_defaults(func=_cmd_remove_file)
+
     p_check = sub.add_parser(
-        "check",
+        "check-file",
         help="Check that a Markdown library file has the expected source markers.",
     )
     p_check.add_argument("library", help="The Markdown library file to check.")

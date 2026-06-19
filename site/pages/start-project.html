@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Start a project</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header class="site-header">
+  <h1>Start a project</h1>
+  <p>Create one working folder for the whole teaching-material project.</p>
+  <nav><a href="../index.html">Home</a> <a href="workflow.html">Workflow</a> <a href="start-project.html">Start project</a> <a href="library-maker.html">Make Markdown Library</a> <a href="markdown-mentor.html">Markdown Mentor</a> <a href="prompts.html">Prompts</a> <a href="library.html">Examples</a> <a href="style-builder.html">Style file</a> <a href="install.html">Install</a></nav>
+</header>
+<main>
+
+<p>A Markdown Mentor project is one normal folder with the same structure every time. This keeps source files, AI prompts, draft materials, exports, and the style file in predictable places.</p>
+<h2>Create the folder</h2>
+<pre><code>markdown-mentor new-project my-project</code></pre>
+<h2>Project structure</h2>
+<pre><code>my-project/
+  README-FIRST.md
+  1-source-files/
+    prompt-find-more-source-materials.md
+  2-markdown-library/
+  3-teaching-approach/
+    teaching-approach.md
+    prompt-create-teaching-approach.md
+    prompt-check-teaching-approach.md
+  4-teaching-materials-pack/
+    teaching-materials-pack.md
+    prompt-create-teaching-materials.md
+  5-draft-materials/
+  6-final-exports/
+  style/
+    style.md</code></pre>
+<h2>What to do next</h2>
+<ol><li>Put source files in <code>1-source-files/</code>.</li><li>Run the Make Markdown Library command from inside the project folder.</li><li>Use <code>markdown-mentor guide my-project</code> when you want the step-by-step guide.</li></ol>
+
+</main>
+</body>
+</html>

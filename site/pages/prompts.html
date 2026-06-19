@@ -1,247 +1,30 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Prompts &mdash; Markdown Mentor</title>
-<meta name="description" content="Ready-made prompts to paste into any AI chatbot. Edit them, then copy.">
-<link rel="stylesheet" href="../css/style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project prompts</title>
+  <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-
-<header class="topbar">
-  <div class="wrap">
-    <a class="brand" href="../index.html">markdown<span class="caret">-</span>mentor</a>
-    <nav class="nav">
-      <a href="../index.html">Home</a>
-      <a href="library-maker.html">Library Maker</a>
-      <a href="markdown-mentor.html">Mentor</a>
-      <a href="workflow.html">Workflow</a>
-      <a href="prompts.html">Prompts</a>
-      <a href="library.html">Library</a>
-      <a href="style-builder.html">Style</a>
-      <a href="install.html">Install</a>
-    </nav>
-  </div>
+<header class="site-header">
+  <h1>Project prompts</h1>
+  <p>Prompt files live where the user needs them.</p>
+  <nav><a href="../index.html">Home</a> <a href="workflow.html">Workflow</a> <a href="start-project.html">Start project</a> <a href="library-maker.html">Make Markdown Library</a> <a href="markdown-mentor.html">Markdown Mentor</a> <a href="prompts.html">Prompts</a> <a href="library.html">Examples</a> <a href="style-builder.html">Style file</a> <a href="install.html">Install</a></nav>
 </header>
+<main>
 
-<section class="block">
-  <div class="wrap">
-    <h2>Prompts</h2>
-    <h3 style="margin-top:0">Edit, then copy</h3>
-    <div class="threeq">
-      <div><span class="q">What</span><span class="a">The exact prompts for the AI steps in the workflow. Each one tells the AI what files it will get, what to produce, and what you should check.</span></div>
-      <div><span class="q">Why</span><span class="a">A clear task description gives better, more consistent results than a vague request. These keep the AI on shape.</span></div>
-      <div><span class="q">Next</span><span class="a">Edit a prompt in its box if you wish, press Copy, then paste it into your AI chatbot. Paste your own files where the prompt asks.</span></div>
-    </div>
-    <div class="callout">
-      <p class="label">How to use a prompt</p>
-      <p>Press <strong>Copy</strong>. Open your AI chatbot. Paste the prompt. Then paste your own content (your Markdown library/content pack, brief, and so on) where the prompt says <code class="inline">[PASTE ... HERE]</code>. The Copy button copies whatever is in the box, including your edits.</p>
-    </div>
+<p>Prompt files live next to the files they help create. This means the user does not have to search through a separate prompts folder.</p>
+<h2>Project prompts</h2>
+<table><thead><tr><th>Prompt</th><th>Use it for</th></tr></thead><tbody>
+<tr><td><code>1-source-files/prompt-find-more-source-materials.md</code></td><td>Ask AI what other source materials would be useful.</td></tr>
+<tr><td><code>3-teaching-approach/prompt-create-teaching-approach.md</code></td><td>Create or improve the teaching approach file.</td></tr>
+<tr><td><code>3-teaching-approach/prompt-check-teaching-approach.md</code></td><td>Check the teaching approach against the Markdown library.</td></tr>
+<tr><td><code>4-teaching-materials-pack/prompt-create-teaching-materials.md</code></td><td>Check the requested outputs, then draft each material as Markdown.</td></tr>
+</tbody></table>
+<h2>How to use a prompt</h2>
+<ol><li>Open the prompt file.</li><li>Copy the prompt text.</li><li>Paste it into your AI tool.</li><li>Upload or paste the files named in the prompt.</li><li>Review the AI response before saving or using it.</li></ol>
 
-      <article class="prompt-card">
-        <div class="head">
-          <h3>Suggest teaching briefs</h3>
-          <button class="copy-btn" data-target="suggest_teaching_briefs">Copy</button>
-        </div>
-        <div class="meta">
-          <dl>
-            <dt>AI gets</dt><dd>your Educational Content Training Pack (the Markdown file built by Markdown Mentor).</dd>
-            <dt>AI makes</dt><dd>two or three possible Teaching Briefs you could choose from.</dd>
-            <dt>You check</dt><dd>that each suggested brief is actually supported by the sources, and that the level and purpose match your learners.</dd>
-          </dl>
-        </div>
-        <div class="body">
-          <textarea id="suggest_teaching_briefs" spellcheck="false" aria-label="Suggest teaching briefs prompt, editable">You are helping a teacher decide what to teach from a set of source materials.
-
-I will give you a Markdown library/content pack. It contains several sources, each wrapped in
-SOURCE START and SOURCE END markers.
-
-Read the whole pack. Then suggest two or three different Teaching Briefs that
-the sources could support well. Do not invent topics the sources do not cover.
-
-For each suggested brief, use this format:
-
-- What should be taught (one or two sentences)
-- Who it is for (a likely audience and level)
-- Purpose (what the learner should be able to do afterwards)
-- What to include (three to five points)
-- What to leave out (one or two points)
-- How well the sources support it (strong, partial, or thin, with a reason)
-
-Use plain English. Keep each brief short. After the briefs, add one sentence
-saying which brief the sources support best, and why.
-
-Here is the Markdown library/content pack:
-
-[PASTE YOUR CONTENT PACK HERE]</textarea>
-        </div>
-      </article>
-
-      <article class="prompt-card">
-        <div class="head">
-          <h3>Improve the content pack</h3>
-          <button class="copy-btn" data-target="improve_content_pack">Copy</button>
-        </div>
-        <div class="meta">
-          <dl>
-            <dt>AI gets</dt><dd>your Markdown library/content pack, your teaching goal, and (if you have it) the readiness note from Markdown Mentor.</dd>
-            <dt>AI makes</dt><dd>a short list of what is missing or weak, and what kind of source would fix each gap.</dd>
-            <dt>You check</dt><dd>that the suggestions are realistic for you to find or write, and that you are not being asked to add private student data or copyrighted material you do not have permission to use.</dd>
-          </dl>
-        </div>
-        <div class="body">
-          <textarea id="improve_content_pack" spellcheck="false" aria-label="Improve the content pack prompt, editable">You are reviewing a set of teaching sources to help a teacher strengthen them.
-
-I will give you a teaching goal and a Markdown library/content pack. I may also give you a
-readiness note that lists possible problems.
-
-Read everything. Then tell me, in plain English:
-
-1. What the pack covers well for this goal.
-2. What is missing or weak (for example: no worked examples, no practice
-   questions, no assessment criteria, only background reading, unclear level).
-3. For each gap, what kind of source would fix it. Be specific, but suggest the
-   type of source, not invented facts.
-
-Do not write the missing material. Do not invent content. Only advise on what
-to collect or create. Do not suggest adding private personal data or material
-the teacher may not have permission to use.
-
-End with one short paragraph: can the pack support the goal as it stands, or
-should more be added first?
-
-== TEACHING GOAL ==
-[PASTE YOUR TEACHING GOAL HERE]
-
-== CONTENT PACK ==
-[PASTE YOUR CONTENT PACK HERE]
-
-== READINESS NOTE (optional) ==
-[PASTE YOUR READINESS NOTE HERE, OR DELETE THIS SECTION]</textarea>
-        </div>
-      </article>
-
-      <article class="prompt-card">
-        <div class="head">
-          <h3>Generate the materials inventory</h3>
-          <button class="copy-btn" data-target="generate_inventory">Copy</button>
-        </div>
-        <div class="meta">
-          <dl>
-            <dt>AI gets</dt><dd>your Markdown library/content pack, your Teaching Brief, your Pedagogy</dd>
-            <dt>AI makes</dt><dd>a numbered inventory. Each item names one material to create, with enough detail to generate it later.</dd>
-            <dt>You check</dt><dd>that the list is the right size, covers the brief, and does not include anything the sources cannot support. It is far easier to fix the plan now than to fix many finished documents later.</dd>
-          </dl>
-        </div>
-        <div class="body">
-          <textarea id="generate_inventory" spellcheck="false" aria-label="Generate the materials inventory prompt, editable">You are planning a set of teaching materials. Do not write the materials yet.
-Your job is only to produce a clear plan.
-
-You will receive five things:
-1. A Markdown library/content pack (the source material).
-2. A Teaching Brief (what to teach).
-3. A Pedagogy Specification (how to teach it).
-4. Teaching Material Specifications (the shapes each material must take).
-5. A Teaching Materials List (which material types to produce).
-
-Read all five. Then produce a Teaching Materials Inventory as a numbered list.
-For each item, give:
-
-- Title
-- Material type (from the Teaching Material Specifications)
-- Purpose (one sentence)
-- Audience and level
-- Which sources it draws on
-- Output format (Word, slides, or web)
-- Rough length
-- Any special requirement
-
-Only plan materials the sources can support. If the sources are too thin for an
-item on the list, say so and suggest a smaller version instead.
-
-End with one short paragraph telling me what to check before I approve the plan.
-
-Here are the five inputs:
-
-== CONTENT PACK ==
-[PASTE YOUR CONTENT PACK HERE]
-
-== TEACHING BRIEF ==
-[PASTE YOUR TEACHING BRIEF HERE]
-
-== PEDAGOGY SPECIFICATION ==
-[PASTE YOUR PEDAGOGY SPECIFICATION HERE]
-
-== TEACHING MATERIAL SPECIFICATIONS ==
-[PASTE YOUR TEACHING MATERIAL SPECIFICATIONS HERE]
-
-== TEACHING MATERIALS LIST ==
-[PASTE YOUR TEACHING MATERIALS LIST HERE]</textarea>
-        </div>
-      </article>
-
-      <article class="prompt-card">
-        <div class="head">
-          <h3>Generate one teaching material</h3>
-          <button class="copy-btn" data-target="generate_material">Copy</button>
-        </div>
-        <div class="meta">
-          <dl>
-            <dt>AI gets</dt><dd>your Markdown library/content pack, your Pedagogy Specification, the matching Teaching Material Specification, and the one inventory item you want to make now.</dd>
-            <dt>AI makes</dt><dd>one finished teaching material, written in Markdown, ready to save as a .md file and export with Markdown Mentor.</dd>
-            <dt>You check</dt><dd>that the material is accurate, matches the brief and pedagogy, and only uses content from the sources. Edit the Markdown before you export it if you wish.</dd>
-          </dl>
-        </div>
-        <div class="body">
-          <textarea id="generate_material" spellcheck="false" aria-label="Generate one teaching material prompt, editable">You are writing one teaching material. Write only this one item.
-
-You will receive:
-1. A Markdown library/content pack (the source material).
-2. A Pedagogy Specification (how to teach).
-3. One Teaching Material Specification (the shape this material must take).
-4. One inventory item (the exact material to create now).
-
-Write the material in Markdown. Follow the Teaching Material Specification
-exactly. Match the tone and approach in the Pedagogy Specification. Use only
-information found in the Markdown library/content pack. If something needed is missing from the
-sources, say so in a short note at the end rather than inventing it.
-
-Formatting rules for the Markdown:
-- Use &quot;#&quot; for the title, &quot;##&quot; for sections, &quot;###&quot; for sub-sections.
-- Use &quot;-&quot; for bullet points and &quot;1.&quot; for numbered lists.
-- Keep lines short and plain.
-- Do not add HTML.
-
-At the very end, add a short section called &quot;Sources used&quot; listing which
-sources from the pack you drew on.
-
-Here are the inputs:
-
-== CONTENT PACK ==
-[PASTE YOUR CONTENT PACK HERE]
-
-== PEDAGOGY SPECIFICATION ==
-[PASTE YOUR PEDAGOGY SPECIFICATION HERE]
-
-== TEACHING MATERIAL SPECIFICATION ==
-[PASTE THE MATCHING SPECIFICATION HERE]
-
-== INVENTORY ITEM ==
-[PASTE THE ONE INVENTORY ITEM HERE]</textarea>
-        </div>
-      </article>
-
-  </div>
-</section>
-
-<footer>
-  <div class="wrap">
-    <span>Markdown Mentor &mdash; plain tools, plain English.</span>
-    <span class="mono"><a href="https://github.com/markbeachill/markdown-mentor">github.com/markbeachill/markdown-mentor</a></span>
-  </div>
-</footer>
-
-<script src="../js/copy.js"></script>
+</main>
 </body>
 </html>

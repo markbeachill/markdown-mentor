@@ -1,50 +1,50 @@
 # Markdown Mentor
 
-Markdown Mentor is the education-focused part of the project.
+`markdown-mentor` is the teaching-material workflow tool.
 
-It starts with a Markdown library file and helps you turn that source material into teaching and learning materials.
+It can:
 
-## What it does
-
-Markdown Mentor can:
-
-- guide you through the teaching workflow
-- check whether a source library is strong enough for a teaching goal
-- point you to prompts for teaching briefs, inventories, and generated materials
-- export finished Markdown materials to DOCX, PPTX, HTML, or PDF
-
-## Main commands
-
-Start the guided workflow:
-
-```bash
-markdown-mentor start
+```text
+new-project
+guide
+export
 ```
 
-Check a library/content pack for teaching use:
+## Create a project folder
 
 ```bash
-markdown-mentor check-pack my-library.md -g "teach thesis statements"
+markdown-mentor new-project my-project
 ```
 
-Export finished materials:
+This creates the numbered project folder and starter files.
+
+## Show the workflow guide
 
 ```bash
-markdown-mentor export ./materials -f docx
+markdown-mentor guide my-project
 ```
 
-Teaching alias for making a content pack:
+The guide tells the user which folders, files, and prompts to use. It does not send files to AI.
+
+## Export draft materials
 
 ```bash
-markdown-mentor build-pack ./sources
+markdown-mentor export 5-draft-materials -f docx -o 6-final-exports -s style/style.md
 ```
 
-For general source libraries, prefer:
+Other formats:
 
-```bash
-markdown-library make ./sources -o my-library.md
+```text
+docx
+pptx
+html
+pdf
 ```
 
-## What Markdown Mentor does not do
+PDF export needs LibreOffice.
 
-Markdown Mentor does not talk to an AI API. You use the prompts in your own AI chatbot and check the output yourself.
+The style file is Markdown and normally lives at:
+
+```text
+style/style.md
+```
