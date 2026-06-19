@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+
+.pytest_cache/
+
+# Markdown Mentor working files
+content-pack.md
+content-pack-manifest.md
+content-pack-readiness.md
+/exports/
+/materials/
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "markdown-mentor"
+version = "0.1.0"
+description = "Turn teaching files into teaching materials, with the help of AI."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "markbeachill" }]
+keywords = ["education", "markdown", "teaching", "ai", "materials"]
+dependencies = [
+    "markitdown[all]>=0.0.1",
+    "python-docx>=1.1.0",
+    "python-pptx>=0.6.23",
+    "markdown>=3.5",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0"]
+
+[project.urls]
+Homepage = "https://github.com/markbeachill/markdown-mentor"
+Repository = "https://github.com/markbeachill/markdown-mentor"
+
+[project.scripts]
+markdown-mentor = "markdown_mentor.cli:main"
+
+[tool.setuptools]
+packages = ["markdown_mentor"]
