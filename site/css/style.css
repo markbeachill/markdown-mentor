@@ -450,3 +450,37 @@ footer {
   background: #842514;
   color: #fff;
 }
+
+/* Copy buttons for command/code blocks */
+.copy-code-block {
+  position: relative;
+  max-width: 100%;
+  margin: 0.8rem 0 1.35rem;
+}
+
+.copy-code-block pre {
+  margin: 0;
+  padding-top: 2.65rem;
+}
+
+.copy-code-button {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.55rem;
+  margin: 0;
+  min-height: 1.9rem;
+  padding: 0.28rem 0.65rem;
+  border-color: rgba(248, 245, 237, 0.36);
+  background: rgba(248, 245, 237, 0.12);
+  color: var(--code-text);
+  font-size: 0.8rem;
+  line-height: 1;
+  z-index: 1;
+}
+
+.copy-code-button:hover,
+.copy-code-button:focus-visible,
+.copy-code-button.copied {
+  background: rgba(248, 245, 237, 0.25);
+  color: var(--code-text);
+}

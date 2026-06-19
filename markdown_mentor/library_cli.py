@@ -27,11 +27,49 @@ def _print_not_added(result) -> None:
             print(f"  not added - {record.relative_path}")
 
 
+def _make_usage() -> str:
+    return (
+        "Correct use:\n"
+        "  make-markdown-library new\n"
+        "  make-markdown-library new SOURCE_FOLDER\n"
+        "  make-markdown-library new SOURCE_FOLDER DESTINATION_FOLDER\n"
+        "  make-markdown-library new SOURCE_FOLDER DESTINATION_FILE.md\n\n"
+        "Examples:\n"
+        "  make-markdown-library new 1-source-files 2-markdown-library\n"
+        "  make-markdown-library new 1-source-files 2-markdown-library/markdown-library.md\n\n"
+        "SOURCE_FOLDER is the folder containing your source files.\n"
+        "DESTINATION_FOLDER is where the library should be saved. The tool will create markdown-library.md inside it.\n"
+        "DESTINATION_FILE.md is the exact Markdown library file to write."
+    )
+
+
+def _resolve_new_paths(args: argparse.Namespace) -> tuple[str, str]:
+    paths = list(getattr(args, "paths", []))
+    if args.output and len(paths) > 1:
+        raise SystemExit("Problem: use either DESTINATION_FOLDER/FILE or --output, not both.\n\n" + _make_usage())
+    if len(paths) > 2:
+        raise SystemExit("Problem: too many paths were given to new.\n\n" + _make_usage())
+    source = paths[0] if paths else "1-source-files"
+    if args.output:
+        output = args.output
+    elif len(paths) == 2:
+        from pathlib import Path
+        destination = Path(paths[1])
+        if destination.suffix.lower() in {".md", ".markdown"}:
+            output = str(destination)
+        else:
+            output = str(destination / "markdown-library.md")
+    else:
+        output = "2-markdown-library/markdown-library.md"
+    return source, output
+
+
 def _cmd_make(args: argparse.Namespace) -> int:
     try:
+        source, output = _resolve_new_paths(args)
         result = build_library(
-            args.source,
-            args.output,
+            source,
+            output,
             args.purpose or "",
             allow_duplicates=args.allow_duplicates,
         )
@@ -139,12 +177,23 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--version", action="version", version=f"make-markdown-library {__version__}")
     sub = parser.add_subparsers(dest="command", required=True)
 
+    make_description = (
+        "Make a new Markdown library file from a file, folder, ZIP, or existing Markdown library.\n\n"
+        "Correct use:\n"
+        "  make-markdown-library new\n"
+        "  make-markdown-library new SOURCE_FOLDER\n"
+        "  make-markdown-library new SOURCE_FOLDER DESTINATION_FOLDER\n"
+        "  make-markdown-library new SOURCE_FOLDER DESTINATION_FILE.md\n\n"
+        "Default: 1-source-files -> 2-markdown-library/markdown-library.md"
+    )
     p_make = sub.add_parser(
         "new",
         help="Make a new Markdown library file from a file, folder, or ZIP.",
+        description=make_description,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
     )
-    p_make.add_argument("source", help="A source file, folder, ZIP file, or existing Markdown library file.")
-    p_make.add_argument("-o", "--output", help="Where to save the Markdown library file.")
+    p_make.add_argument("paths", nargs="*", metavar="path", help="Optional source folder and destination folder/file.")
+    p_make.add_argument("-o", "--output", help="Where to save the Markdown library file. Do not use this with a destination path.")
     p_make.add_argument("-p", "--purpose", help="A short note about what this library is for.")
     p_make.add_argument(
         "--allow-duplicates",

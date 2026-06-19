@@ -18,6 +18,9 @@
 <h2>What to do</h2>
 <p>Run this command:</p>
 <pre><code>python make-markdown-library.py make</code></pre>
+<p>This uses the default folders: source files from <code>1-source-files/</code>, output to <code>2-markdown-library/markdown-library.md</code>.</p>
+<p>You can also give the source and destination folders explicitly:</p>
+<pre><code>python make-markdown-library.py make 1-source-files 2-markdown-library</code></pre>
 <p>The tool also creates <code>2-markdown-library/markdown-library-manifest.md</code> and handles folders, files, ZIPs, nested ZIPs, and existing Markdown library files.</p>
 <p>If the source folder contains an existing Markdown library, the tool imports the sources inside that library as separate source sections. It does not add the old library as one large file, so AI can still read the new library as a set of separate files.</p>
 <p>Duplicates are skipped by default. If a duplicate is skipped, the tool prints <code>not added - filename</code>. To include duplicates deliberately, add <code>--allow-duplicates</code>.</p>
@@ -26,5 +29,6 @@
 <nav class="page-nav"><a href="step-3-find-more-sources.html">← Previous step</a> <a href="step-5-list-remove.html">Next step →</a></nav>
 
 </main>
+<script src="../../js/copy.js" defer></script>
 </body>
 </html>

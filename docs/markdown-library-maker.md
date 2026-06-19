@@ -12,6 +12,16 @@ In the simple website route, users run:
 python make-markdown-library.py make
 ```
 
+This uses the default folders: source files from `1-source-files/`, output to `2-markdown-library/markdown-library.md`.
+
+You can also give the source and destination explicitly:
+
+```bash
+python make-markdown-library.py make 1-source-files 2-markdown-library
+```
+
+The first folder is the source folder. The second folder is the destination folder.
+
 This assumes the standard project folders:
 
 ```text
@@ -25,6 +35,36 @@ It creates:
 2-markdown-library/markdown-library.md
 2-markdown-library/markdown-library-manifest.md
 ```
+
+## Source and destination
+
+The `make` command can be used in three common ways.
+
+Use the standard project folders:
+
+```bash
+python make-markdown-library.py make
+```
+
+Give the source folder only:
+
+```bash
+python make-markdown-library.py make 1-source-files
+```
+
+Give both the source folder and destination folder:
+
+```bash
+python make-markdown-library.py make 1-source-files 2-markdown-library
+```
+
+You can also give the exact destination file:
+
+```bash
+python make-markdown-library.py make 1-source-files 2-markdown-library/markdown-library.md
+```
+
+If the user gives the wrong number of paths, the tool should print these correct forms and explain which path is the source and which path is the destination.
 
 ## Commands
 

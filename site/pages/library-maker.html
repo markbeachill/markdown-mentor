@@ -11,6 +11,9 @@
 <p>Make Markdown Library is the general-purpose source tool. It combines your source files into one Markdown library file that AI can read as a set of separate sources.</p>
 <h2>Normal-user command</h2>
 <pre><code>python make-markdown-library.py make</code></pre>
+<p>This uses the default folders: source files from <code>1-source-files/</code>, output to <code>2-markdown-library/markdown-library.md</code>.</p>
+<p>You can also give the source and destination folders explicitly:</p>
+<pre><code>python make-markdown-library.py make 1-source-files 2-markdown-library</code></pre>
 <p>This reads <code>1-source-files/</code> and writes:</p>
 <pre><code>2-markdown-library/markdown-library.md
 2-markdown-library/markdown-library-manifest.md</code></pre>
@@ -38,5 +41,6 @@ make-markdown-library remove-file 2-markdown-library/markdown-library.md 3
 make-markdown-library check-file 2-markdown-library/markdown-library.md</code></pre>
 <section class="callout"><p>This tool checks file structure only. It does not decide whether sources are good enough for teaching.</p></section>
 </main>
+<script src="../js/copy.js" defer></script>
 </body>
 </html>

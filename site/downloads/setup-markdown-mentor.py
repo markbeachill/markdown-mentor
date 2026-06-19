@@ -79,6 +79,7 @@ def main() -> int:
     print("Next step:")
     print("  1. Put your source files in 1-source-files/")
     print("  2. Run: python make-markdown-library.py make")
+    print("     or: python make-markdown-library.py make 1-source-files 2-markdown-library")
     return 0
 
 

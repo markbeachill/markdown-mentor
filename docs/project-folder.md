@@ -75,6 +75,16 @@ After putting source files into `1-source-files/`, run:
 python make-markdown-library.py make
 ```
 
+This uses the default folders: source files from `1-source-files/`, output to `2-markdown-library/markdown-library.md`.
+
+You can also give the source and destination explicitly:
+
+```bash
+python make-markdown-library.py make 1-source-files 2-markdown-library
+```
+
+The first folder is the source folder. The second folder is the destination folder.
+
 This creates:
 
 ```text

@@ -5,6 +5,7 @@ Normal use from inside a Markdown Mentor project folder:
 
     python make-markdown-library.py setup
     python make-markdown-library.py make
+    python make-markdown-library.py make 1-source-files 2-markdown-library
     python make-markdown-library.py list
     python make-markdown-library.py remove-file 3
 
@@ -571,12 +572,58 @@ def command_setup(_args: argparse.Namespace) -> int:
     return 0
 
 
+def make_usage() -> str:
+    return (
+        "Correct use:\n"
+        "  python make-markdown-library.py make\n"
+        "  python make-markdown-library.py make SOURCE_FOLDER\n"
+        "  python make-markdown-library.py make SOURCE_FOLDER DESTINATION_FOLDER\n"
+        "  python make-markdown-library.py make SOURCE_FOLDER DESTINATION_FILE.md\n\n"
+        "Examples:\n"
+        "  python make-markdown-library.py make\n"
+        "  python make-markdown-library.py make 1-source-files 2-markdown-library\n"
+        "  python make-markdown-library.py make 1-source-files 2-markdown-library/markdown-library.md\n\n"
+        "SOURCE_FOLDER is the folder containing your source files.\n"
+        "DESTINATION_FOLDER is where the library should be saved. The tool will create markdown-library.md inside it.\n"
+        "DESTINATION_FILE.md is the exact Markdown library file to write."
+    )
+
+
+def resolve_make_paths(args: argparse.Namespace) -> tuple[Path, Path]:
+    paths = [Path(p) for p in getattr(args, "paths", [])]
+    if args.output and len(paths) > 1:
+        raise SystemExit("Problem: use either DESTINATION_FOLDER/FILE or --output, not both.\n\n" + make_usage())
+    if len(paths) > 2:
+        raise SystemExit("Problem: too many paths were given to make.\n\n" + make_usage())
+
+    source = paths[0] if paths else DEFAULT_SOURCE_DIR
+
+    if args.output:
+        output = Path(args.output)
+    elif len(paths) == 2:
+        destination = paths[1]
+        if destination.suffix.lower() in {".md", ".markdown"}:
+            output = destination
+        else:
+            output = destination / "markdown-library.md"
+    else:
+        output = DEFAULT_LIBRARY
+
+    return source, output
+
+
 def command_make(args: argparse.Namespace) -> int:
-    source = Path(args.source or DEFAULT_SOURCE_DIR)
-    output = Path(args.output or DEFAULT_LIBRARY)
-    records, pairs = convert_sources(source, allow_duplicates=args.allow_duplicates)
-    write_library(output, source, records, [section for _rec, section in pairs])
+    source, output = resolve_make_paths(args)
+    try:
+        records, pairs = convert_sources(source, allow_duplicates=args.allow_duplicates)
+        write_library(output, source, records, [section for _rec, section in pairs])
+    except FileNotFoundError as exc:
+        print(f"Problem: {exc}", file=sys.stderr)
+        print("", file=sys.stderr)
+        print(make_usage(), file=sys.stderr)
+        return 1
     print("Markdown library file made.")
+    print(f"  Source:   {source}")
     print(f"  Library:  {output}")
     print(f"  Manifest: {output.with_name(output.stem + '-manifest.md')}")
     print(f"  Sources included: {sum(1 for r in records if r.included)}")
@@ -681,10 +728,24 @@ def build_parser() -> argparse.ArgumentParser:
     p = sub.add_parser("setup", help="Create the Markdown Mentor project folders in this folder.")
     p.set_defaults(func=command_setup)
 
+    make_description = (
+        "Make a new Markdown library file.\n\n"
+        "Correct use:\n"
+        "  python make-markdown-library.py make\n"
+        "  python make-markdown-library.py make SOURCE_FOLDER\n"
+        "  python make-markdown-library.py make SOURCE_FOLDER DESTINATION_FOLDER\n"
+        "  python make-markdown-library.py make SOURCE_FOLDER DESTINATION_FILE.md\n\n"
+        "Default: 1-source-files -> 2-markdown-library/markdown-library.md"
+    )
     for name in ["make", "new"]:
-        p = sub.add_parser(name, help="Make a new Markdown library file.")
-        p.add_argument("source", nargs="?", help="Source file, folder, ZIP, or library. Default: 1-source-files")
-        p.add_argument("-o", "--output", help="Output library file. Default: 2-markdown-library/markdown-library.md")
+        p = sub.add_parser(
+            name,
+            help="Make a new Markdown library file.",
+            description=make_description,
+            formatter_class=argparse.RawDescriptionHelpFormatter,
+        )
+        p.add_argument("paths", nargs="*", metavar="path", help="Optional source folder and destination folder/file.")
+        p.add_argument("-o", "--output", help="Output library file. Do not use this with a destination path.")
         p.add_argument("--allow-duplicates", action="store_true", help="Add duplicate source fingerprints instead of skipping them.")
         p.set_defaults(func=command_make)
 
